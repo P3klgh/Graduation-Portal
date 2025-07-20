@@ -10,9 +10,6 @@ export default function RSVPForm() {
     last_name: '',
     email: '',
     phone: '',
-    dietary_restrictions: '',
-    plus_one: false,
-    plus_one_name: '',
     graduation_date: '2025-08-02'
   })
   
@@ -89,9 +86,6 @@ export default function RSVPForm() {
           last_name: '',
           email: '',
           phone: '',
-          dietary_restrictions: '',
-          plus_one: false,
-          plus_one_name: '',
           graduation_date: '2025-08-02'
         })
       } else {
@@ -233,62 +227,6 @@ export default function RSVPForm() {
             }}
           />
         </div>
-
-        <div style={{ marginBottom: '0.75rem' }}>
-          <label htmlFor="dietary_restrictions" style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
-            Dietary Restrictions
-          </label>
-          <textarea
-            id="dietary_restrictions"
-            name="dietary_restrictions"
-            value={formData.dietary_restrictions}
-            onChange={handleInputChange}
-            placeholder="Any dietary restrictions or special requirements"
-            rows={3}
-            style={{
-              background: 'rgba(255, 255, 255, 0.1)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              color: 'white',
-              padding: '0.75rem',
-              borderRadius: '5px',
-              width: '100%',
-              resize: 'vertical'
-            }}
-          />
-        </div>
-
-        <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'flex', alignItems: 'center', color: 'white', marginBottom: '0.5rem' }}>
-            <input
-              type="checkbox"
-              name="plus_one"
-              checked={formData.plus_one}
-              onChange={handleInputChange}
-              style={{ marginRight: '0.5rem' }}
-            />
-            Bringing a plus one?
-          </label>
-          
-          {formData.plus_one && (
-            <input
-              type="text"
-              name="plus_one_name"
-              value={formData.plus_one_name}
-              onChange={handleInputChange}
-              placeholder="Plus one's name"
-              style={{
-                background: 'rgba(255, 255, 255, 0.1)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: 'white',
-                padding: '0.75rem',
-                borderRadius: '5px',
-                width: '100%',
-                marginTop: '0.5rem'
-              }}
-            />
-          )}
-        </div>
-        
         <button
           type="submit"
           disabled={isSubmitting}
