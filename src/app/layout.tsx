@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import FontAwesomeLoader from '@/components/FontAwesomeLoader'
 
 export const metadata: Metadata = {
   title: 'Graduation Portal - RSVP Survey',
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="is-preload">{children}</body>
+      <body className="is-preload">
+        <FontAwesomeLoader />
+        {children}
+      </body>
     </html>
   )
 } 
