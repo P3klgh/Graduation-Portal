@@ -35,6 +35,11 @@ export default function RSVPForm() {
     setMessage(null)
 
     try {
+      // Check if Supabase is available
+      if (!supabase) {
+        throw new Error('Database connection not configured')
+      }
+
       // Insert RSVP data into Supabase
       const { error } = await supabase
         .from('rsvp_submissions')

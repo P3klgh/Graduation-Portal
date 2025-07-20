@@ -3,6 +3,9 @@
 import { useEffect } from 'react'
 import RSVPForm from '@/components/RSVPForm'
 
+// Force dynamic rendering to avoid build-time data fetching
+export const dynamic = 'force-dynamic'
+
 export default function Home() {
   useEffect(() => {
     // Remove preload class when component mounts

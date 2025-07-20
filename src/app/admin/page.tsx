@@ -4,6 +4,9 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import AdminDashboard from '@/components/AdminDashboard'
 
+// Force dynamic rendering to avoid build-time data fetching
+export const dynamic = 'force-dynamic'
+
 export default function AdminPage() {
   useEffect(() => {
     // Remove preload class when component mounts

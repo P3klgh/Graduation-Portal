@@ -18,6 +18,10 @@ export default function AdminDashboard() {
 
   const fetchRSVPs = async () => {
     try {
+      if (!supabase) {
+        throw new Error('Database connection not configured')
+      }
+
       const { data, error } = await supabase
         .from('rsvp_submissions')
         .select('*')
