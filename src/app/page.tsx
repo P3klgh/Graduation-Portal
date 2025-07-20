@@ -1,6 +1,10 @@
 'use client'
 
 import { useEffect } from 'react'
+import RSVPForm from '@/components/RSVPForm'
+
+// Force dynamic rendering to avoid build-time data fetching
+export const dynamic = 'force-dynamic'
 
 export default function Home() {
   useEffect(() => {
@@ -14,18 +18,24 @@ export default function Home() {
       <div id="overlay"></div>
       <div id="main">
         {/* Header */}
-        <header id="header" style={{ 
-          position: 'fixed', 
-          top: '0', 
-          left: '0', 
-          width: '100%', 
-          zIndex: 4,
-          padding: '2rem',
-          textAlign: 'center'
-        }}>
+        <header id="header">
           <h1>Kenneth&apos;s Graduation 2025</h1>
           <p>August 2nd, 2025 &nbsp;&bull;&nbsp; 9:00 AM &nbsp;&bull;&nbsp; Star Brisbane</p>
         </header>
+
+        {/* RSVP Form */}
+        <div id="rsvp" style={{ 
+          position: 'absolute', 
+          top: '50%', 
+          left: '50%', 
+          transform: 'translate(-50%, -50%)', 
+          zIndex: 3, 
+          width: '100%', 
+          maxWidth: '600px', 
+          padding: '0 2rem'
+        }}>
+          <RSVPForm />
+        </div>
 
         {/* Footer */}
         <footer id="footer">
