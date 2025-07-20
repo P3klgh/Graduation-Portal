@@ -1,5 +1,6 @@
 /* Aerial Template Styles - Must be at the top */
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,900");
+@import url("/assets/css/fontawesome-all.min.css");
 
 @tailwind base;
 @tailwind components;
@@ -669,5 +670,10 @@ a:hover {
 	.rsvp-form {
 		margin: 1rem;
 		padding: 1.5rem;
+	}
+	
+	#rsvp {
+		top: 65% !important;
+		max-width: 90% !important;
 	}
 } 
