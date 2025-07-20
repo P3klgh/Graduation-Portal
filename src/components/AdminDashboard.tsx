@@ -109,159 +109,194 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="container py-5">
-        <div className="text-center">
-          <div className="spinner-border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
+      <div style={{ background: 'rgba(0, 0, 0, 0.8)', borderRadius: '10px', padding: '2rem', backdropFilter: 'blur(10px)', textAlign: 'center' }}>
+        <div style={{ color: 'white' }}>Loading...</div>
       </div>
     )
   }
 
   return (
-    <div className="container py-5">
-      <div className="row">
-        <div className="col-12">
-          <h2 className="mb-4">Admin Dashboard</h2>
-          
-          {message && (
-            <div className={`alert alert-${message.type === 'success' ? 'success' : 'error'}`}>
-              {message.text}
-            </div>
-          )}
-
-          {/* Statistics */}
-          <div className="row mb-4">
-            <div className="col-md-3">
-              <div className="card text-center">
-                <div className="card-body">
-                  <h5 className="card-title">{rsvps.length}</h5>
-                  <p className="card-text">Total RSVPs</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="card text-center">
-                <div className="card-body">
-                  <h5 className="card-title">{rsvps.filter(r => r.plus_one).length}</h5>
-                  <p className="card-text">With Guests</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="card text-center">
-                <div className="card-body">
-                  <h5 className="card-title">{rsvps.filter(r => r.dietary_restrictions).length}</h5>
-                  <p className="card-text">Dietary Restrictions</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="card text-center">
-                <div className="card-body">
-                  <button className="btn btn-outline-primary" onClick={exportToCSV}>
-                    📊 Export CSV
-                  </button>
-                </div>
-              </div>
-            </div>
+    <div style={{ background: 'rgba(0, 0, 0, 0.8)', borderRadius: '10px', padding: '2rem', backdropFilter: 'blur(10px)' }}>
+      <div>
+        <h2 style={{ marginBottom: '2rem', textAlign: 'center', color: 'white' }}>Admin Dashboard</h2>
+        
+        {message && (
+          <div className={`alert alert-${message.type === 'success' ? 'success' : 'error'}`}>
+            {message.text}
           </div>
+        )}
 
-          {/* Notification Form */}
-          <div className="card mb-4">
-            <div className="card-header">
-              <h5 className="mb-0">Send Bulk Notification</h5>
-            </div>
-            <div className="card-body">
-              <form onSubmit={handleSendNotification}>
-                <div className="row">
-                  <div className="col-md-6 mb-3">
-                    <label htmlFor="notificationSubject" className="form-label">Subject*</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="notificationSubject"
-                      value={notificationSubject}
-                      onChange={(e) => setNotificationSubject(e.target.value)}
-                      placeholder="Notification subject"
-                      required
-                    />
-                  </div>
-                  <div className="col-md-6 mb-3">
-                    <label className="form-label">Recipients</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={`${rsvps.length} recipients`}
-                      disabled
-                    />
-                  </div>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="notificationMessage" className="form-label">Message*</label>
-                  <textarea
-                    className="form-control"
-                    id="notificationMessage"
-                    rows={4}
-                    value={notificationMessage}
-                    onChange={(e) => setNotificationMessage(e.target.value)}
-                    placeholder="Enter your message here..."
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={sendingNotification}
-                >
-                  {sendingNotification ? 'Sending...' : 'Send Notification'}
-                </button>
-              </form>
-            </div>
+        {/* Statistics */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+          <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '5px', textAlign: 'center', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
+            <h5 style={{ color: 'white', margin: 0 }}>{rsvps.length}</h5>
+            <p style={{ color: 'rgba(255, 255, 255, 0.8)', margin: 0 }}>Total RSVPs</p>
           </div>
+          <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '5px', textAlign: 'center', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
+            <h5 style={{ color: 'white', margin: 0 }}>{rsvps.filter(r => r.plus_one).length}</h5>
+            <p style={{ color: 'rgba(255, 255, 255, 0.8)', margin: 0 }}>With Guests</p>
+          </div>
+          <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '5px', textAlign: 'center', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
+            <h5 style={{ color: 'white', margin: 0 }}>{rsvps.filter(r => r.dietary_restrictions).length}</h5>
+            <p style={{ color: 'rgba(255, 255, 255, 0.8)', margin: 0 }}>Dietary Restrictions</p>
+          </div>
+          <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '5px', textAlign: 'center', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
+            <button 
+              onClick={exportToCSV}
+              style={{
+                background: 'rgba(255, 255, 255, 0.2)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                color: 'white',
+                padding: '0.5rem 1rem',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+              }}
+            >
+              📊 Export CSV
+            </button>
+          </div>
+        </div>
 
-          {/* RSVP List */}
-          <div className="card">
-            <div className="card-header">
-              <h5 className="mb-0">RSVP Submissions</h5>
-            </div>
-            <div className="card-body">
-              <div className="table-responsive">
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Graduation Date</th>
-                      <th>Plus One</th>
-                      <th>Dietary Restrictions</th>
-                      <th>Submitted</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rsvps.map((rsvp) => (
-                      <tr key={rsvp.id}>
-                        <td>{rsvp.first_name} {rsvp.last_name}</td>
-                        <td>{rsvp.email}</td>
-                        <td>{rsvp.phone || '-'}</td>
-                        <td>{rsvp.graduation_date || '-'}</td>
-                        <td>
-                          {rsvp.plus_one ? (
-                            <span className="badge bg-success">Yes{rsvp.plus_one_name ? ` (${rsvp.plus_one_name})` : ''}</span>
-                          ) : (
-                            <span className="badge bg-secondary">No</span>
-                          )}
-                        </td>
-                        <td>{rsvp.dietary_restrictions || '-'}</td>
-                        <td>{new Date(rsvp.created_at!).toLocaleDateString()}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+        {/* Notification Form */}
+        <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '1.5rem', borderRadius: '5px', marginBottom: '2rem', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
+          <h5 style={{ color: 'white', marginBottom: '1rem' }}>Send Bulk Notification</h5>
+          <form onSubmit={handleSendNotification}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+              <div>
+                <label htmlFor="notificationSubject" style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>Subject*</label>
+                <input
+                  type="text"
+                  id="notificationSubject"
+                  value={notificationSubject}
+                  onChange={(e) => setNotificationSubject(e.target.value)}
+                  placeholder="Notification subject"
+                  required
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    color: 'white',
+                    padding: '0.75rem',
+                    borderRadius: '5px',
+                    width: '100%'
+                  }}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>Recipients</label>
+                <input
+                  type="text"
+                  value={`${rsvps.length} recipients`}
+                  disabled
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    padding: '0.75rem',
+                    borderRadius: '5px',
+                    width: '100%'
+                  }}
+                />
               </div>
             </div>
+            <div style={{ marginBottom: '1rem' }}>
+              <label htmlFor="notificationMessage" style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>Message*</label>
+              <textarea
+                id="notificationMessage"
+                rows={4}
+                value={notificationMessage}
+                onChange={(e) => setNotificationMessage(e.target.value)}
+                placeholder="Enter your message here..."
+                required
+                style={{
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  color: 'white',
+                  padding: '0.75rem',
+                  borderRadius: '5px',
+                  width: '100%',
+                  resize: 'vertical'
+                }}
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={sendingNotification}
+              style={{
+                background: 'rgba(255, 255, 255, 0.2)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                color: 'white',
+                padding: '0.75rem 2rem',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                if (!sendingNotification) {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+                }
+              }}
+              onMouseOut={(e) => {
+                if (!sendingNotification) {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                }
+              }}
+            >
+              {sendingNotification ? 'Sending...' : 'Send Notification'}
+            </button>
+          </form>
+        </div>
+
+        {/* RSVP List */}
+        <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '1.5rem', borderRadius: '5px', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
+          <h5 style={{ color: 'white', marginBottom: '1rem' }}>RSVP Submissions</h5>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '1px solid rgba(255, 255, 255, 0.2)', color: 'white' }}>Name</th>
+                  <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '1px solid rgba(255, 255, 255, 0.2)', color: 'white' }}>Email</th>
+                  <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '1px solid rgba(255, 255, 255, 0.2)', color: 'white' }}>Phone</th>
+                  <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '1px solid rgba(255, 255, 255, 0.2)', color: 'white' }}>Graduation Date</th>
+                  <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '1px solid rgba(255, 255, 255, 0.2)', color: 'white' }}>Plus One</th>
+                  <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '1px solid rgba(255, 255, 255, 0.2)', color: 'white' }}>Dietary Restrictions</th>
+                  <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '1px solid rgba(255, 255, 255, 0.2)', color: 'white' }}>Submitted</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rsvps.map((rsvp) => (
+                  <tr key={rsvp.id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                    <td style={{ padding: '0.75rem', color: 'white' }}>{rsvp.first_name} {rsvp.last_name}</td>
+                    <td style={{ padding: '0.75rem', color: 'white' }}>{rsvp.email}</td>
+                    <td style={{ padding: '0.75rem', color: 'white' }}>{rsvp.phone || '-'}</td>
+                    <td style={{ padding: '0.75rem', color: 'white' }}>{rsvp.graduation_date || '-'}</td>
+                    <td style={{ padding: '0.75rem' }}>
+                      {rsvp.plus_one ? (
+                        <span style={{ background: 'rgba(76, 175, 80, 0.3)', color: '#4CAF50', padding: '0.25rem 0.5rem', borderRadius: '3px', fontSize: '0.875em' }}>
+                          Yes{rsvp.plus_one_name ? ` (${rsvp.plus_one_name})` : ''}
+                        </span>
+                      ) : (
+                        <span style={{ background: 'rgba(255, 255, 255, 0.2)', color: 'rgba(255, 255, 255, 0.8)', padding: '0.25rem 0.5rem', borderRadius: '3px', fontSize: '0.875em' }}>
+                          No
+                        </span>
+                      )}
+                    </td>
+                    <td style={{ padding: '0.75rem', color: 'white' }}>{rsvp.dietary_restrictions || '-'}</td>
+                    <td style={{ padding: '0.75rem', color: 'white' }}>{new Date(rsvp.created_at!).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

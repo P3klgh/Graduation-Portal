@@ -7,11 +7,8 @@ CREATE TABLE rsvp_submissions (
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
   email TEXT NOT NULL,
-  phone TEXT,
-  dietary_restrictions TEXT,
-  plus_one BOOLEAN DEFAULT FALSE,
-  plus_one_name TEXT,
-  graduation_date DATE,
+  phone TEXT NOT NULL,
+  graduation_date DATE DEFAULT '2024-08-02',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

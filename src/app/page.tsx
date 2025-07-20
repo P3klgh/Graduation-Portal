@@ -1,85 +1,45 @@
+'use client'
+
+import { useEffect } from 'react'
 import RSVPForm from '@/components/RSVPForm'
 
 export default function Home() {
+  useEffect(() => {
+    // Remove preload class when component mounts
+    document.body.classList.remove('is-preload')
+  }, [])
+
   return (
-    <main className="min-h-screen">
-      {/* Header */}
-      <header className="bg-white shadow-sm py-4">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-md-6">
-              <h1 className="h3 mb-0">🎓 Graduation Portal</h1>
-              <p className="text-muted mb-0">Class of 2024</p>
-            </div>
-            <div className="col-md-6 text-md-end">
-              <p className="text-muted mb-0">
-                <strong>Ceremony Date:</strong> June 15, 2024
-              </p>
-              <p className="text-muted mb-0">
-                <strong>Location:</strong> University Graduation Hall
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div id="wrapper">
+      <div id="bg"></div>
+      <div id="overlay"></div>
+      <div id="main">
+        {/* Header */}
+        <header id="header">
+          <h1>🎓 Graduation 2025</h1>
+          <p>August 2nd, 2025 &nbsp;&bull;&nbsp; 9:00 AM &nbsp;&bull;&nbsp; Star Brisbane</p>
+          <nav>
+            <ul>
+              <li><a href="#rsvp" className="icon solid fa-calendar-check"><span className="label">RSVP</span></a></li>
+              <li><a href="mailto:graduation@starbrisbane.com" className="icon solid fa-envelope"><span className="label">Email</span></a></li>
+              <li><a href="tel:+61730000000" className="icon solid fa-phone"><span className="label">Phone</span></a></li>
+              <li><a href="/admin" className="icon solid fa-cog"><span className="label">Admin</span></a></li>
+            </ul>
+          </nav>
+        </header>
 
-      {/* Hero Section */}
-      <section className="py-5 bg-light">
-        <div className="container">
-          <div className="row justify-content-center text-center">
-            <div className="col-lg-8">
-              <h2 className="display-4 mb-4">Join Us for Your Special Day!</h2>
-              <p className="lead mb-4">
-                We&apos;re excited to celebrate your achievements! Please RSVP below to confirm your attendance 
-                and receive important updates about the graduation ceremony.
-              </p>
-              <div className="row text-center">
-                <div className="col-md-4 mb-3">
-                  <div className="p-3">
-                    <h5>📅 Save the Date</h5>
-                    <p className="text-muted">June 15, 2024 at 2:00 PM</p>
-                  </div>
-                </div>
-                <div className="col-md-4 mb-3">
-                  <div className="p-3">
-                    <h5>📍 Location</h5>
-                    <p className="text-muted">University Graduation Hall</p>
-                  </div>
-                </div>
-                <div className="col-md-4 mb-3">
-                  <div className="p-3">
-                    <h5>📧 Stay Updated</h5>
-                    <p className="text-muted">Get notified about important updates</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* RSVP Form */}
+        <div id="rsvp" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 3, width: '100%', maxWidth: '500px', padding: '0 2rem' }}>
+          <RSVPForm />
         </div>
-      </section>
 
-      {/* RSVP Form */}
-      <RSVPForm />
-
-      {/* Footer */}
-      <footer className="bg-dark text-white py-4 mt-5">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6">
-              <h5>Graduation Portal</h5>
-              <p className="mb-0">Celebrating the Class of 2024</p>
-            </div>
-            <div className="col-md-6 text-md-end">
-              <p className="mb-0">
-                Questions? Contact us at{' '}
-                <a href="mailto:graduation@university.edu" className="text-white">
-                  graduation@university.edu
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </main>
+        {/* Footer */}
+        <footer id="footer">
+          <span className="copyright">
+            &copy; 2025 Graduation Portal. Contact: <a href="mailto:graduation@starbrisbane.com">graduation@starbrisbane.com</a>
+          </span>
+        </footer>
+      </div>
+    </div>
   )
 } 
