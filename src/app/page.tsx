@@ -1,10 +1,6 @@
 'use client'
 
 import { useEffect } from 'react'
-import RSVPForm from '@/components/RSVPForm'
-
-// Force dynamic rendering to avoid build-time data fetching
-export const dynamic = 'force-dynamic'
 
 export default function Home() {
   useEffect(() => {
@@ -18,46 +14,18 @@ export default function Home() {
       <div id="overlay"></div>
       <div id="main">
         {/* Header */}
-        <header id="header" style={{ top: '2rem', position: 'absolute', width: '100%', zIndex: 4 }}>
+        <header id="header" style={{ 
+          position: 'fixed', 
+          top: '0', 
+          left: '0', 
+          width: '100%', 
+          zIndex: 4,
+          padding: '2rem',
+          textAlign: 'center'
+        }}>
           <h1>Kenneth&apos;s Graduation 2025</h1>
           <p>August 2nd, 2025 &nbsp;&bull;&nbsp; 9:00 AM &nbsp;&bull;&nbsp; Star Brisbane</p>
         </header>
-
-        {/* Navigation Menu - Positioned lower */}
-        <nav style={{ 
-          position: 'absolute', 
-          bottom: '6rem', 
-          left: '50%', 
-          transform: 'translateX(-50%)', 
-          zIndex: 4 
-        }}>
-          <ul style={{ 
-            display: 'flex', 
-            gap: '2rem', 
-            listStyle: 'none', 
-            margin: 0, 
-            padding: 0 
-          }}>
-            <li><a href="#rsvp" className="icon solid fa-calendar-check" style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '1.5em', textDecoration: 'none' }}><span className="label">RSVP</span></a></li>
-            <li><a href="mailto:kenneth.agent.bot@gmail.com" className="icon solid fa-envelope" style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '1.5em', textDecoration: 'none' }}><span className="label">Email</span></a></li>
-            <li><a href="tel:+61730000000" className="icon solid fa-phone" style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '1.5em', textDecoration: 'none' }}><span className="label">Phone</span></a></li>
-            <li><a href="/admin" className="icon solid fa-cog" style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '1.5em', textDecoration: 'none' }}><span className="label">Admin</span></a></li>
-          </ul>
-        </nav>
-
-        {/* RSVP Form */}
-        <div id="rsvp" style={{ 
-          position: 'absolute', 
-          top: '45%', 
-          left: '50%', 
-          transform: 'translate(-50%, -50%)', 
-          zIndex: 3, 
-          width: '100%', 
-          maxWidth: '600px', 
-          padding: '0 2rem'
-        }}>
-          <RSVPForm />
-        </div>
 
         {/* Footer */}
         <footer id="footer">
