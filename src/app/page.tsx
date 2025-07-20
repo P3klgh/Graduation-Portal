@@ -20,10 +20,10 @@ export default function Home() {
         {/* Header */}
         <header id="header" style={{ 
           position: 'relative', 
-          top: '2rem', 
-          zIndex: 4,
+          zIndex: 10,
           textAlign: 'center',
-          marginBottom: '3rem'
+          marginBottom: '2rem',
+          padding: '1rem 0'
         }}>
           <h1>Kenneth&apos;s Graduation 2025</h1>
           <p>August 2nd, 2025 &nbsp;&bull;&nbsp; 9:00 AM &nbsp;&bull;&nbsp; Star Brisbane</p>
@@ -32,11 +32,12 @@ export default function Home() {
         {/* RSVP Form */}
         <div id="rsvp" style={{ 
           position: 'relative', 
-          zIndex: 3, 
+          zIndex: 5, 
           width: '100%', 
           maxWidth: '600px', 
-          margin: '0 auto 3rem auto',
-          padding: '0 2rem'
+          margin: '0 auto 2rem auto',
+          padding: '0 2rem',
+          flex: '1'
         }}>
           <RSVPForm />
         </div>
@@ -44,8 +45,8 @@ export default function Home() {
         {/* Footer */}
         <footer id="footer" style={{ 
           position: 'relative', 
-          bottom: '2rem', 
-          zIndex: 4 
+          zIndex: 10,
+          marginTop: 'auto'
         }}>
           <span className="copyright">
             &copy; 2025 Graduation Portal. Contact: <a href="mailto:kenneth.agent.bot@gmail.com">kenneth.agent.bot@gmail.com</a>
