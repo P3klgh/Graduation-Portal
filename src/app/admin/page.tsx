@@ -25,7 +25,7 @@ export default function AdminPage() {
           <nav>
             <ul>
               <li><Link href="/" className="icon solid fa-home"><span className="label">Home</span></Link></li>
-              <li><a href="mailto:graduation@starbrisbane.com" className="icon solid fa-envelope"><span className="label">Email</span></a></li>
+              <li><a href="mailto:kenneth.agent.bot@gmail.com" className="icon solid fa-envelope"><span className="label">Email</span></a></li>
               <li><a href="tel:+61730000000" className="icon solid fa-phone"><span className="label">Phone</span></a></li>
             </ul>
           </nav>
