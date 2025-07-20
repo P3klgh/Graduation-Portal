@@ -24,7 +24,7 @@ export default function Home() {
           <nav>
             <ul>
               <li><a href="#rsvp" className="icon solid fa-calendar-check"><span className="label">RSVP</span></a></li>
-              <li><a href="mailto:graduation@starbrisbane.com" className="icon solid fa-envelope"><span className="label">Email</span></a></li>
+              <li><a href="mailto:kenneth.agent.bot@gmail.com" className="icon solid fa-envelope"><span className="label">Email</span></a></li>
               <li><a href="tel:+61730000000" className="icon solid fa-phone"><span className="label">Phone</span></a></li>
               <li><a href="/admin" className="icon solid fa-cog"><span className="label">Admin</span></a></li>
             </ul>
@@ -32,14 +32,14 @@ export default function Home() {
         </header>
 
         {/* RSVP Form */}
-        <div id="rsvp" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 3, width: '100%', maxWidth: '500px', padding: '0 2rem' }}>
+        <div id="rsvp" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 3, width: '100%', maxWidth: '600px', padding: '0 2rem', marginTop: '2rem' }}>
           <RSVPForm />
         </div>
 
         {/* Footer */}
         <footer id="footer">
           <span className="copyright">
-            &copy; 2025 Graduation Portal. Contact: <a href="mailto:graduation@starbrisbane.com">graduation@starbrisbane.com</a>
+            &copy; 2025 Graduation Portal. Contact: <a href="mailto:kenneth.agent.bot@gmail.com">kenneth.agent.bot@gmail.com</a>
           </span>
         </footer>
       </div>
