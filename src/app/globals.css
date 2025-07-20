@@ -649,6 +649,12 @@ a:hover {
 	color: #F44336;
 }
 
+/* Navigation hover effects */
+nav a:hover {
+	color: rgba(255, 255, 255, 1) !important;
+	transition: color 0.2s ease-in-out;
+}
+
 /* Responsive Design */
 @media screen and (max-width: 736px) {
 	body {
@@ -675,5 +681,14 @@ a:hover {
 	#rsvp {
 		top: 50% !important;
 		max-width: 90% !important;
+	}
+	
+	/* Mobile navigation adjustments */
+	nav {
+		bottom: 4rem !important;
+	}
+	
+	nav ul {
+		gap: 1rem !important;
 	}
 } 
