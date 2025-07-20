@@ -34,21 +34,22 @@ export default function RSVPForm() {
     try {
       // Check if Supabase is available
       if (!supabase) {
-        throw new Error('Database connection not configured')
+        console.warn('Supabase not configured - skipping database save')
+        // Continue with email sending even if database is not available
+      } else {
+        // Insert RSVP data into Supabase
+        const { data, error } = await supabase
+          .from('rsvp_submissions')
+          .insert([formData])
+          .select()
+
+        if (error) {
+          console.error('Supabase error:', error)
+          throw new Error(`Database error: ${error.message}`)
+        }
+
+        console.log('RSVP saved to database:', data)
       }
-
-      // Insert RSVP data into Supabase
-      const { data, error } = await supabase
-        .from('rsvp_submissions')
-        .insert([formData])
-        .select()
-
-      if (error) {
-        console.error('Supabase error:', error)
-        throw new Error(`Database error: ${error.message}`)
-      }
-
-      console.log('RSVP saved to database:', data)
 
       // Send confirmation email
       const emailResult = await sendRSVPConfirmation({
