@@ -100,15 +100,15 @@ export default function RSVPForm() {
     <div className="rsvp-form" style={{ 
       background: 'rgba(0, 0, 0, 0.8)', 
       borderRadius: '10px', 
-      padding: '2rem', 
+      padding: '1.5rem', 
       backdropFilter: 'blur(10px)',
       border: '1px solid rgba(255, 255, 255, 0.2)',
-      minHeight: '500px',
+      minHeight: '420px',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center'
     }}>
-      <h3 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '1.5em', color: 'white' }}>
+      <h3 style={{ textAlign: 'center', marginBottom: '1.5rem', fontSize: '1.5em', color: 'white' }}>
         RSVP for Graduation 2025
       </h3>
       
@@ -126,7 +126,7 @@ export default function RSVPForm() {
       )}
       
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '1rem' }}>
+        <div style={{ marginBottom: '0.75rem' }}>
           <label htmlFor="first_name" style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
             First name*
           </label>
@@ -149,7 +149,7 @@ export default function RSVPForm() {
           />
         </div>
         
-        <div style={{ marginBottom: '1rem' }}>
+        <div style={{ marginBottom: '0.75rem' }}>
           <label htmlFor="last_name" style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
             Last name*
           </label>
@@ -172,7 +172,7 @@ export default function RSVPForm() {
           />
         </div>
         
-        <div style={{ marginBottom: '1rem' }}>
+        <div style={{ marginBottom: '0.75rem' }}>
           <label htmlFor="email" style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
             Email address*
           </label>
@@ -195,7 +195,7 @@ export default function RSVPForm() {
           />
         </div>
         
-        <div style={{ marginBottom: '1.5rem' }}>
+        <div style={{ marginBottom: '1rem' }}>
           <label htmlFor="phone" style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
             Phone Number*
           </label>

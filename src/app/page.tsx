@@ -19,7 +19,7 @@ export default function Home() {
       <div id="main">
         {/* Header */}
         <header id="header">
-          <h1>🎓 Graduation 2025</h1>
+          <h1>Kenneth&apos;s Graduation 2025</h1>
           <p>August 2nd, 2025 &nbsp;&bull;&nbsp; 9:00 AM &nbsp;&bull;&nbsp; Star Brisbane</p>
           <nav>
             <ul>
@@ -32,7 +32,16 @@ export default function Home() {
         </header>
 
         {/* RSVP Form */}
-        <div id="rsvp" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 3, width: '100%', maxWidth: '600px', padding: '0 2rem', marginTop: '2rem' }}>
+        <div id="rsvp" style={{ 
+          position: 'absolute', 
+          top: '60%', 
+          left: '50%', 
+          transform: 'translate(-50%, -50%)', 
+          zIndex: 3, 
+          width: '100%', 
+          maxWidth: '600px', 
+          padding: '0 2rem'
+        }}>
           <RSVPForm />
         </div>
 
