@@ -443,17 +443,13 @@ a:hover {
 	-webkit-transform: translate3d(0, 0, 0);
 	-ms-transform: translate3d(0, 0, 0);
 	transform: translate3d(0, 0, 0);
-	height: 100vh;
-	left: 0;
-	position: absolute;
+	position: fixed;
 	top: 0;
+	left: 0;
 	width: 100vw;
-	z-index: 2;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	z-index: 4;
 	text-align: center;
+	padding: 2rem;
 }
 
 #header h1 {

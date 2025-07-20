@@ -47,4 +47,28 @@ export const sendBulkNotification = async (emails: string[], message: string, su
     console.error('Bulk Email Error:', error)
     return { success: false, error }
   }
+}
+
+export const sendReminderEmail = async (data: {
+  first_name: string
+  last_name: string
+  email: string
+  graduation_date?: string
+}) => {
+  try {
+    const response = await emailjs.send(
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'placeholder_service',
+      process.env.NEXT_PUBLIC_EMAILJS_REMINDER_TEMPLATE_ID || 'placeholder_reminder_template',
+      {
+        to_name: `${data.first_name} ${data.last_name}`,
+        to_email: data.email,
+        graduation_date: data.graduation_date || 'TBD',
+        message: `This is a friendly reminder that Kenneth's Graduation Ceremony is coming up! Please make sure to mark your calendar and arrive on time.`
+      }
+    )
+    return { success: true, response }
+  } catch (error) {
+    console.error('Reminder Email Error:', error)
+    return { success: false, error }
+  }
 } 
