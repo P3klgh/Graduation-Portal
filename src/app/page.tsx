@@ -18,27 +18,35 @@ export default function Home() {
       <div id="overlay"></div>
       <div id="main">
         {/* Header */}
-        <header id="header">
+        <header id="header" style={{ 
+          position: 'relative', 
+          top: '2rem', 
+          zIndex: 4,
+          textAlign: 'center',
+          marginBottom: '3rem'
+        }}>
           <h1>Kenneth&apos;s Graduation 2025</h1>
           <p>August 2nd, 2025 &nbsp;&bull;&nbsp; 9:00 AM &nbsp;&bull;&nbsp; Star Brisbane</p>
         </header>
 
         {/* RSVP Form */}
         <div id="rsvp" style={{ 
-          position: 'absolute', 
-          top: '50%', 
-          left: '50%', 
-          transform: 'translate(-50%, -50%)', 
+          position: 'relative', 
           zIndex: 3, 
           width: '100%', 
           maxWidth: '600px', 
+          margin: '0 auto 3rem auto',
           padding: '0 2rem'
         }}>
           <RSVPForm />
         </div>
 
         {/* Footer */}
-        <footer id="footer">
+        <footer id="footer" style={{ 
+          position: 'relative', 
+          bottom: '2rem', 
+          zIndex: 4 
+        }}>
           <span className="copyright">
             &copy; 2025 Graduation Portal. Contact: <a href="mailto:kenneth.agent.bot@gmail.com">kenneth.agent.bot@gmail.com</a>
           </span>
