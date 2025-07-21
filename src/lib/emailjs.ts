@@ -10,9 +10,25 @@ export const sendRSVPConfirmation = async (data: {
   graduation_date?: string
 }) => {
   try {
+    // Check if EmailJS is properly configured
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+
+    if (!serviceId || !templateId || !publicKey || 
+        serviceId === 'placeholder_service' || 
+        templateId === 'placeholder_template' || 
+        publicKey === 'placeholder_key') {
+      console.warn('EmailJS not properly configured - skipping email send')
+      return { 
+        success: false, 
+        error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
+      }
+    }
+
     const response = await emailjs.send(
-      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'placeholder_service',
-      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'placeholder_template',
+      serviceId,
+      templateId,
       {
         to_name: `${data.first_name} ${data.last_name}`,
         to_email: data.email,
@@ -29,10 +45,26 @@ export const sendRSVPConfirmation = async (data: {
 
 export const sendBulkNotification = async (emails: string[], message: string, subject: string) => {
   try {
+    // Check if EmailJS is properly configured
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_BULK_TEMPLATE_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+
+    if (!serviceId || !templateId || !publicKey || 
+        serviceId === 'placeholder_service' || 
+        templateId === 'placeholder_template' || 
+        publicKey === 'placeholder_key') {
+      console.warn('EmailJS not properly configured - skipping bulk email send')
+      return { 
+        success: false, 
+        error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
+      }
+    }
+
     const promises = emails.map(email => 
       emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'placeholder_service',
-        process.env.NEXT_PUBLIC_EMAILJS_BULK_TEMPLATE_ID || 'placeholder_bulk_template',
+        serviceId,
+        templateId,
         {
           to_email: email,
           subject: subject,
@@ -56,9 +88,25 @@ export const sendReminderEmail = async (data: {
   graduation_date?: string
 }) => {
   try {
+    // Check if EmailJS is properly configured
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_REMINDER_TEMPLATE_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+
+    if (!serviceId || !templateId || !publicKey || 
+        serviceId === 'placeholder_service' || 
+        templateId === 'placeholder_template' || 
+        publicKey === 'placeholder_key') {
+      console.warn('EmailJS not properly configured - skipping reminder email send')
+      return { 
+        success: false, 
+        error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
+      }
+    }
+
     const response = await emailjs.send(
-      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'placeholder_service',
-      process.env.NEXT_PUBLIC_EMAILJS_REMINDER_TEMPLATE_ID || 'placeholder_reminder_template',
+      serviceId,
+      templateId,
       {
         to_name: `${data.first_name} ${data.last_name}`,
         to_email: data.email,
