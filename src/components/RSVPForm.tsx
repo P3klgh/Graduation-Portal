@@ -34,6 +34,9 @@ export default function RSVPForm() {
       // Check if Supabase is available
       if (!supabase) {
         console.warn('Supabase not configured - skipping database save')
+        console.log('Environment check:')
+        console.log('- NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Not set')
+        console.log('- NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Not set')
         setMessage({
           type: 'error',
           text: 'Database connection not configured. Please contact the administrator.'
