@@ -33,7 +33,8 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 	-webkit-text-size-adjust: none;
-	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 ol, ul {
@@ -350,8 +351,9 @@ a:hover {
 	width: 100vw;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-start;
-	padding: 1rem 0;
+	justify-content: space-between;
+	padding: 2rem 0;
+	box-sizing: border-box;
 }
 
 #main:before {
@@ -668,5 +670,44 @@ a:hover {
 		margin: 1rem auto !important;
 	}
 	
+	#main {
+		padding: 1rem 0 !important;
+	}
+	
+	#footer {
+		margin-top: 1rem !important;
+		padding: 0.5rem 0 !important;
+	}
+}
 
+/* High zoom level adjustments */
+@media screen and (min-height: 800px) {
+	#main {
+		padding: 3rem 0 !important;
+	}
+	
+	#rsvp {
+		margin: 2rem auto !important;
+	}
+}
+
+/* Low zoom level adjustments */
+@media screen and (max-height: 600px) {
+	#main {
+		padding: 1rem 0 !important;
+	}
+	
+	#header {
+		margin-bottom: 1rem !important;
+		padding: 0.5rem 0 !important;
+	}
+	
+	#rsvp {
+		margin: 1rem auto !important;
+	}
+	
+	#footer {
+		margin-top: 1rem !important;
+		padding: 0.5rem 0 !important;
+	}
 } 
