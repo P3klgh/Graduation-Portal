@@ -274,9 +274,10 @@ a:hover {
 	-webkit-animation: bg 3s forwards;
 	-ms-animation: bg 3s forwards;
 	animation: bg 3s forwards;
-	background: #348cb2 url("/assets/css/images/bg.jpg") bottom left;
-	background-repeat: repeat-x;
-	background-size: 1500px auto;
+	background: #348cb2 url("/assets/css/images/bg.jpg") center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
 	height: 100vh;
 	left: 0;
 	position: absolute;
@@ -678,6 +679,11 @@ a:hover {
 		margin-top: 1rem !important;
 		padding: 0.5rem 0 !important;
 	}
+	
+	#bg {
+		background-attachment: scroll !important;
+		background-size: cover !important;
+	}
 }
 
 /* High zoom level adjustments */
@@ -709,5 +715,13 @@ a:hover {
 	#footer {
 		margin-top: 1rem !important;
 		padding: 0.5rem 0 !important;
+	}
+}
+
+/* Large screen background optimization */
+@media screen and (min-width: 1200px) {
+	#bg {
+		background-size: cover !important;
+		background-position: center center !important;
 	}
 } 

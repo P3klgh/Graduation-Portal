@@ -20,7 +20,7 @@ export default function Home() {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        padding: '2rem 0',
+        padding: '0.5rem 0',
         boxSizing: 'border-box'
       }}>
         {/* Header */}
@@ -28,8 +28,8 @@ export default function Home() {
           position: 'relative', 
           zIndex: 10,
           textAlign: 'center',
-          marginBottom: '2rem',
-          padding: '1rem 0',
+          marginBottom: '0.5rem',
+          padding: '0.5rem 0',
           flexShrink: 0
         }}>
           <h1>Kenneth&apos;s Graduation 2025</h1>
@@ -43,7 +43,7 @@ export default function Home() {
           width: '100%', 
           maxWidth: '600px', 
           margin: '0 auto',
-          padding: '0 2rem',
+          padding: '0rem',
           flex: '1 1 auto',
           display: 'flex',
           flexDirection: 'column',
