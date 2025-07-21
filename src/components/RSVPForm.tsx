@@ -127,34 +127,37 @@ export default function RSVPForm() {
     <div className="rsvp-form" style={{ 
       background: 'rgba(0, 0, 0, 0.8)', 
       borderRadius: '10px', 
-      padding: '1.5rem', 
+      padding: '1rem', 
       backdropFilter: 'blur(10px)',
       border: '1px solid rgba(255, 255, 255, 0.2)',
-      minHeight: '400px',
+      maxWidth: '500px',
+      width: '100%',
+      margin: '0 auto',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center'
     }}>
-      <h3 style={{ textAlign: 'center', marginBottom: '1.5rem', fontSize: '1.5em', color: 'white' }}>
+      <h3 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: '1.3em', color: 'white', fontWeight: 'bold' }}>
         RSVP for Graduation 2025
       </h3>
       
       {message && (
         <div style={{
-          padding: '1rem',
-          marginBottom: '1rem',
+          padding: '0.75rem',
+          marginBottom: '0.75rem',
           borderRadius: '5px',
           backgroundColor: message.type === 'success' ? 'rgba(76, 175, 80, 0.2)' : 'rgba(244, 67, 54, 0.2)',
           border: `1px solid ${message.type === 'success' ? '#4CAF50' : '#F44336'}`,
-          color: message.type === 'success' ? '#4CAF50' : '#F44336'
+          color: message.type === 'success' ? '#4CAF50' : '#F44336',
+          fontSize: '0.9em'
         }}>
           {message.text}
         </div>
       )}
       
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '0.75rem' }}>
-          <label htmlFor="first_name" style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
+        <div style={{ marginBottom: '0.5rem' }}>
+          <label htmlFor="first_name" style={{ display: 'block', marginBottom: '0.25rem', color: 'white', fontSize: '0.9em' }}>
             First name*
           </label>
           <input
@@ -169,15 +172,16 @@ export default function RSVPForm() {
               background: 'rgba(255, 255, 255, 0.1)',
               border: '1px solid rgba(255, 255, 255, 0.2)',
               color: 'white',
-              padding: '0.75rem',
+              padding: '0.5rem',
               borderRadius: '5px',
-              width: '100%'
+              width: '100%',
+              fontSize: '0.9em'
             }}
           />
         </div>
         
-        <div style={{ marginBottom: '0.75rem' }}>
-          <label htmlFor="last_name" style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
+        <div style={{ marginBottom: '0.5rem' }}>
+          <label htmlFor="last_name" style={{ display: 'block', marginBottom: '0.25rem', color: 'white', fontSize: '0.9em' }}>
             Last name*
           </label>
           <input
@@ -192,15 +196,16 @@ export default function RSVPForm() {
               background: 'rgba(255, 255, 255, 0.1)',
               border: '1px solid rgba(255, 255, 255, 0.2)',
               color: 'white',
-              padding: '0.75rem',
+              padding: '0.5rem',
               borderRadius: '5px',
-              width: '100%'
+              width: '100%',
+              fontSize: '0.9em'
             }}
           />
         </div>
         
-        <div style={{ marginBottom: '0.75rem' }}>
-          <label htmlFor="email" style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
+        <div style={{ marginBottom: '0.5rem' }}>
+          <label htmlFor="email" style={{ display: 'block', marginBottom: '0.25rem', color: 'white', fontSize: '0.9em' }}>
             Email address*
           </label>
           <input
@@ -215,15 +220,16 @@ export default function RSVPForm() {
               background: 'rgba(255, 255, 255, 0.1)',
               border: '1px solid rgba(255, 255, 255, 0.2)',
               color: 'white',
-              padding: '0.75rem',
+              padding: '0.5rem',
               borderRadius: '5px',
-              width: '100%'
+              width: '100%',
+              fontSize: '0.9em'
             }}
           />
         </div>
         
-        <div style={{ marginBottom: '0.75rem' }}>
-          <label htmlFor="phone" style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
+        <div style={{ marginBottom: '0.5rem' }}>
+          <label htmlFor="phone" style={{ display: 'block', marginBottom: '0.25rem', color: 'white', fontSize: '0.9em' }}>
             Phone Number*
           </label>
           <input
@@ -238,9 +244,10 @@ export default function RSVPForm() {
               background: 'rgba(255, 255, 255, 0.1)',
               border: '1px solid rgba(255, 255, 255, 0.2)',
               color: 'white',
-              padding: '0.75rem',
+              padding: '0.5rem',
               borderRadius: '5px',
-              width: '100%'
+              width: '100%',
+              fontSize: '0.9em'
             }}
           />
         </div>
@@ -251,12 +258,13 @@ export default function RSVPForm() {
             background: 'rgba(255, 255, 255, 0.2)',
             border: '1px solid rgba(255, 255, 255, 0.3)',
             color: 'white',
-            padding: '0.75rem 2rem',
+            padding: '0.5rem 1.5rem',
             borderRadius: '5px',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
             width: '100%',
-            fontSize: '1.1em'
+            fontSize: '1em',
+            marginTop: '0.5rem'
           }}
           onMouseOver={(e) => {
             if (!isSubmitting) {
