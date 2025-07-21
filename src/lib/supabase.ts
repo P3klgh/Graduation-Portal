@@ -7,6 +7,8 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 // Debug logging
 console.log('Supabase URL:', supabaseUrl ? 'Set' : 'Not set')
 console.log('Supabase Anon Key:', supabaseAnonKey ? 'Set' : 'Not set')
+console.log('Full Supabase URL:', supabaseUrl)
+console.log('Anon Key length:', supabaseAnonKey?.length || 0)
 
 // Environment variables are properly configured
 export const supabase = supabaseUrl && supabaseAnonKey && 
@@ -25,6 +27,9 @@ export const supabase = supabaseUrl && supabaseAnonKey &&
       }
     })
   : null
+
+// Additional debug logging
+console.log('Supabase client created:', supabase ? 'Yes' : 'No')
 
 export interface RSVPData {
   id?: string
