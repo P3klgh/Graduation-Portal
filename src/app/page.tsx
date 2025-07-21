@@ -16,14 +16,21 @@ export default function Home() {
     <div id="wrapper">
       <div id="bg"></div>
       <div id="overlay"></div>
-      <div id="main">
+      <div id="main" style={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        padding: '2rem 0',
+        boxSizing: 'border-box'
+      }}>
         {/* Header */}
         <header id="header" style={{ 
           position: 'relative', 
           zIndex: 10,
           textAlign: 'center',
           marginBottom: '2rem',
-          padding: '1rem 0'
+          padding: '1rem 0',
+          flexShrink: 0
         }}>
           <h1>Kenneth&apos;s Graduation 2025</h1>
           <p>August 2nd, 2025 &nbsp;&bull;&nbsp; 9:00 AM &nbsp;&bull;&nbsp; Star Brisbane</p>
@@ -35,9 +42,13 @@ export default function Home() {
           zIndex: 5, 
           width: '100%', 
           maxWidth: '600px', 
-          margin: '0 auto 2rem auto',
+          margin: '0 auto',
           padding: '0 2rem',
-          flex: '1'
+          flex: '1 1 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          minHeight: '0'
         }}>
           <RSVPForm />
         </div>
@@ -46,7 +57,10 @@ export default function Home() {
         <footer id="footer" style={{ 
           position: 'relative', 
           zIndex: 10,
-          marginTop: 'auto'
+          marginTop: '2rem',
+          flexShrink: 0,
+          textAlign: 'center',
+          padding: '1rem 0'
         }}>
           <span className="copyright">
             &copy; 2025 Graduation Portal. Contact: <a href="mailto:kenneth.agent.bot@gmail.com">kenneth.agent.bot@gmail.com</a>
