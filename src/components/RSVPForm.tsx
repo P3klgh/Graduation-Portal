@@ -78,10 +78,17 @@ export default function RSVPForm() {
           })
         } else {
           console.error('Reminder email error:', reminderResult.error)
-          setMessage({
-            type: 'success',
-            text: 'Thank you for your RSVP! You will receive a confirmation email shortly.'
-          })
+          if (reminderResult.error === 'EmailJS not configured. Please set up EmailJS environment variables.') {
+            setMessage({
+              type: 'success',
+              text: 'Thank you for your RSVP! Your submission has been saved. Email notifications are not configured at this time.'
+            })
+          } else {
+            setMessage({
+              type: 'success',
+              text: 'Thank you for your RSVP! You will receive a confirmation email shortly.'
+            })
+          }
         }
         
         // Reset form
@@ -93,10 +100,17 @@ export default function RSVPForm() {
         })
       } else {
         console.error('Email error:', emailResult.error)
-        setMessage({
-          type: 'error',
-          text: 'RSVP submitted successfully, but there was an issue sending the confirmation email.'
-        })
+        if (emailResult.error === 'EmailJS not configured. Please set up EmailJS environment variables.') {
+          setMessage({
+            type: 'success',
+            text: 'Thank you for your RSVP! Your submission has been saved. Email notifications are not configured at this time.'
+          })
+        } else {
+          setMessage({
+            type: 'error',
+            text: 'RSVP submitted successfully, but there was an issue sending the confirmation email.'
+          })
+        }
       }
     } catch (error) {
       console.error('Submission error:', error)
