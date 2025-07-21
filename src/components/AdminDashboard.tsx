@@ -86,7 +86,7 @@ export default function AdminDashboard() {
   }
 
   const exportToCSV = () => {
-    const headers = ['First Name', 'Last Name', 'Email', 'Phone', 'Graduation Date', 'Plus One', 'Plus One Name', 'Dietary Restrictions', 'Created At']
+    const headers = ['First Name', 'Last Name', 'Email', 'Phone', 'Created At']
     const csvContent = [
       headers.join(','),
       ...rsvps.map(rsvp => [
@@ -94,10 +94,6 @@ export default function AdminDashboard() {
         rsvp.last_name,
         rsvp.email,
         rsvp.phone || '',
-        rsvp.graduation_date || '',
-        rsvp.plus_one ? 'Yes' : 'No',
-        rsvp.plus_one_name || '',
-        rsvp.dietary_restrictions || '',
         rsvp.created_at
       ].join(','))
     ].join('\n')
@@ -135,14 +131,6 @@ export default function AdminDashboard() {
           <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '5px', textAlign: 'center', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
             <h5 style={{ color: 'white', margin: 0 }}>{rsvps.length}</h5>
             <p style={{ color: 'rgba(255, 255, 255, 0.8)', margin: 0 }}>Total RSVPs</p>
-          </div>
-          <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '5px', textAlign: 'center', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
-            <h5 style={{ color: 'white', margin: 0 }}>{rsvps.filter(r => r.plus_one).length}</h5>
-            <p style={{ color: 'rgba(255, 255, 255, 0.8)', margin: 0 }}>With Guests</p>
-          </div>
-          <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '5px', textAlign: 'center', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
-            <h5 style={{ color: 'white', margin: 0 }}>{rsvps.filter(r => r.dietary_restrictions).length}</h5>
-            <p style={{ color: 'rgba(255, 255, 255, 0.8)', margin: 0 }}>Dietary Restrictions</p>
           </div>
           <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '1rem', borderRadius: '5px', textAlign: 'center', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
             <button 
@@ -283,19 +271,6 @@ export default function AdminDashboard() {
                     <td style={{ padding: '0.75rem', color: 'white' }}>{rsvp.first_name} {rsvp.last_name}</td>
                     <td style={{ padding: '0.75rem', color: 'white' }}>{rsvp.email}</td>
                     <td style={{ padding: '0.75rem', color: 'white' }}>{rsvp.phone || '-'}</td>
-                    <td style={{ padding: '0.75rem', color: 'white' }}>{rsvp.graduation_date || '-'}</td>
-                    <td style={{ padding: '0.75rem' }}>
-                      {rsvp.plus_one ? (
-                        <span style={{ background: 'rgba(76, 175, 80, 0.3)', color: '#4CAF50', padding: '0.25rem 0.5rem', borderRadius: '3px', fontSize: '0.875em' }}>
-                          Yes{rsvp.plus_one_name ? ` (${rsvp.plus_one_name})` : ''}
-                        </span>
-                      ) : (
-                        <span style={{ background: 'rgba(255, 255, 255, 0.2)', color: 'rgba(255, 255, 255, 0.8)', padding: '0.25rem 0.5rem', borderRadius: '3px', fontSize: '0.875em' }}>
-                          No
-                        </span>
-                      )}
-                    </td>
-                    <td style={{ padding: '0.75rem', color: 'white' }}>{rsvp.dietary_restrictions || '-'}</td>
                     <td style={{ padding: '0.75rem', color: 'white' }}>{new Date(rsvp.created_at!).toLocaleDateString()}</td>
                   </tr>
                 ))}
