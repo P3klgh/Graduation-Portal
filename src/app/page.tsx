@@ -19,9 +19,10 @@ export default function Home() {
       <div id="main" style={{
         display: 'flex',
         flexDirection: 'column',
-        minHeight: '100vh',
-        padding: '0.5rem 0',
-        boxSizing: 'border-box'
+        height: '100vh',
+        padding: '1rem 0',
+        boxSizing: 'border-box',
+        overflow: 'hidden'
       }}>
         {/* Header */}
         <header id="header" style={{ 
@@ -43,12 +44,13 @@ export default function Home() {
           width: '100%', 
           maxWidth: '600px', 
           margin: '0 auto',
-          padding: '0rem',
+          padding: '0 1rem',
           flex: '1 1 auto',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          minHeight: '0'
+          minHeight: '0',
+          overflow: 'auto'
         }}>
           <RSVPForm />
         </div>
@@ -57,10 +59,10 @@ export default function Home() {
         <footer id="footer" style={{ 
           position: 'relative', 
           zIndex: 10,
-          marginTop: '2rem',
+          marginTop: '1rem',
           flexShrink: 0,
           textAlign: 'center',
-          padding: '1rem 0'
+          padding: '0.5rem 0'
         }}>
           <span className="copyright">
             &copy; 2025 Graduation Portal. Contact: <a href="mailto:kenneth.agent.bot@gmail.com">kenneth.agent.bot@gmail.com</a>
