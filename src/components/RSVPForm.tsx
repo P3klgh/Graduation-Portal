@@ -9,8 +9,7 @@ export default function RSVPForm() {
     first_name: '',
     last_name: '',
     email: '',
-    phone: '',
-    graduation_date: '2025-08-02'
+    phone: ''
   })
   
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -60,7 +59,7 @@ export default function RSVPForm() {
         first_name: formData.first_name,
         last_name: formData.last_name,
         email: formData.email,
-        graduation_date: formData.graduation_date
+        graduation_date: '2025-08-02'
       })
 
       if (emailResult.success) {
@@ -69,7 +68,7 @@ export default function RSVPForm() {
           first_name: formData.first_name,
           last_name: formData.last_name,
           email: formData.email,
-          graduation_date: formData.graduation_date
+          graduation_date: '2025-08-02'
         })
 
         if (reminderResult.success) {
@@ -90,8 +89,7 @@ export default function RSVPForm() {
           first_name: '',
           last_name: '',
           email: '',
-          phone: '',
-          graduation_date: '2025-08-02'
+          phone: ''
         })
       } else {
         console.error('Email error:', emailResult.error)

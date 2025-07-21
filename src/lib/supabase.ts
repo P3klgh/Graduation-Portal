@@ -8,7 +8,14 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 export const supabase = supabaseUrl && supabaseAnonKey && 
   !supabaseUrl.includes('placeholder') && !supabaseAnonKey.includes('placeholder')
-  ? createClient(supabaseUrl, supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      db: {
+        schema: 'public'
+      },
+      auth: {
+        persistSession: false
+      }
+    })
   : null
 
 export interface RSVPData {
@@ -17,10 +24,6 @@ export interface RSVPData {
   last_name: string
   email: string
   phone?: string
-  dietary_restrictions?: string
-  plus_one?: boolean
-  plus_one_name?: string
-  graduation_date?: string
   created_at?: string
   updated_at?: string
 }
