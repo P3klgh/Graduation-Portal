@@ -1,7 +1,8 @@
 import { supabase } from './supabase'
 import { sendAdminNotification } from './emailjs'
+import { RealtimeChannel } from '@supabase/supabase-js'
 
-export const setupRSVPSubscription = () => {
+export const setupRSVPSubscription = (): RealtimeChannel | null => {
   if (!supabase) {
     console.warn('Supabase not configured - cannot setup real-time subscription')
     return null
@@ -19,11 +20,11 @@ export const setupRSVPSubscription = () => {
           schema: 'public',
           table: 'rsvp_submissions'
         },
-        async (payload) => {
-                  try {
-          console.log('New RSVP detected:', payload.new)
-          
-          const { first_name, last_name, email, phone } = payload.new as any
+                async (payload) => {
+          try {
+            console.log('New RSVP detected:', payload.new)
+            
+            const { first_name, last_name, email, phone } = payload.new as { first_name: string; last_name: string; email: string; phone?: string }
           
           // Only send admin notification if EmailJS is properly configured
           const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
@@ -65,7 +66,7 @@ export const setupRSVPSubscription = () => {
   }
 }
 
-export const cleanupRSVPSubscription = (subscription: any) => {
+export const cleanupRSVPSubscription = (subscription: RealtimeChannel | null) => {
   if (subscription) {
     console.log('Cleaning up RSVP subscription...')
     supabase?.removeChannel(subscription)

@@ -54,7 +54,7 @@ export default function RSVPForm() {
       console.log('RSVP saved to database:', data)
 
       // Send confirmation email to the user
-      let emailResult: { success: boolean; error?: string; response?: any } = { success: false, error: 'EmailJS not configured' }
+      let emailResult: { success: boolean; error?: string; response?: unknown } = { success: false, error: 'EmailJS not configured' }
       try {
         emailResult = await sendRSVPConfirmation({
           first_name: formData.first_name,
