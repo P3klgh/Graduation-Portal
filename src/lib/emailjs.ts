@@ -1,7 +1,22 @@
 import emailjs from '@emailjs/browser'
 
-// Initialize EmailJS
-emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || 'placeholder_key')
+// Initialize EmailJS with proper error handling
+const initializeEmailJS = () => {
+  try {
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+    if (publicKey && publicKey !== 'placeholder_key') {
+      emailjs.init(publicKey)
+      return true
+    }
+    return false
+  } catch (error) {
+    console.warn('Failed to initialize EmailJS:', error)
+    return false
+  }
+}
+
+// Initialize on module load
+const emailjsInitialized = initializeEmailJS()
 
 export const sendRSVPConfirmation = async (data: {
   first_name: string
@@ -18,7 +33,8 @@ export const sendRSVPConfirmation = async (data: {
     if (!serviceId || !templateId || !publicKey || 
         serviceId === 'placeholder_service' || 
         templateId === 'placeholder_template' || 
-        publicKey === 'placeholder_key') {
+        publicKey === 'placeholder_key' ||
+        !emailjsInitialized) {
       console.warn('EmailJS not properly configured - skipping email send')
       return { 
         success: false, 
@@ -39,7 +55,7 @@ export const sendRSVPConfirmation = async (data: {
     return { success: true, response }
   } catch (error) {
     console.error('EmailJS Error:', error)
-    return { success: false, error }
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
@@ -53,7 +69,8 @@ export const sendBulkNotification = async (emails: string[], message: string, su
     if (!serviceId || !templateId || !publicKey || 
         serviceId === 'placeholder_service' || 
         templateId === 'placeholder_template' || 
-        publicKey === 'placeholder_key') {
+        publicKey === 'placeholder_key' ||
+        !emailjsInitialized) {
       console.warn('EmailJS not properly configured - skipping bulk email send')
       return { 
         success: false, 
@@ -77,7 +94,7 @@ export const sendBulkNotification = async (emails: string[], message: string, su
     return { success: true, responses }
   } catch (error) {
     console.error('Bulk Email Error:', error)
-    return { success: false, error }
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
@@ -96,7 +113,8 @@ export const sendReminderEmail = async (data: {
     if (!serviceId || !templateId || !publicKey || 
         serviceId === 'placeholder_service' || 
         templateId === 'placeholder_template' || 
-        publicKey === 'placeholder_key') {
+        publicKey === 'placeholder_key' ||
+        !emailjsInitialized) {
       console.warn('EmailJS not properly configured - skipping reminder email send')
       return { 
         success: false, 
@@ -117,7 +135,7 @@ export const sendReminderEmail = async (data: {
     return { success: true, response }
   } catch (error) {
     console.error('Reminder Email Error:', error)
-    return { success: false, error }
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
@@ -136,7 +154,8 @@ export const sendAdminNotification = async (data: {
     if (!serviceId || !templateId || !publicKey || 
         serviceId === 'placeholder_service' || 
         templateId === 'placeholder_template' || 
-        publicKey === 'placeholder_key') {
+        publicKey === 'placeholder_key' ||
+        !emailjsInitialized) {
       console.warn('EmailJS not properly configured - skipping admin notification')
       return { 
         success: false, 
@@ -157,6 +176,6 @@ export const sendAdminNotification = async (data: {
     return { success: true, response }
   } catch (error) {
     console.error('Admin Notification Error:', error)
-    return { success: false, error }
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
   }
 } 
