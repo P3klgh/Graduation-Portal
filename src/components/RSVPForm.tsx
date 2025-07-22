@@ -66,14 +66,19 @@ export default function RSVPForm() {
       })
 
       // Send admin notification email
-      const adminResult = await sendAdminNotification({
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        email: formData.email,
-        phone: formData.phone
-      })
+      try {
+        const adminResult = await sendAdminNotification({
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          email: formData.email,
+          phone: formData.phone
+        })
 
-      console.log('Admin notification result:', adminResult)
+        console.log('Admin notification result:', adminResult)
+      } catch (error) {
+        console.error('Error sending admin notification:', error)
+        // Don't fail the form submission if admin notification fails
+      }
 
       if (emailResult.success) {
         // Send reminder email (scheduled for 1 week before graduation)
