@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { supabase, RSVPData } from '@/lib/supabase'
-import { sendRSVPConfirmation, sendReminderEmail } from '@/lib/emailjs'
+import { sendRSVPConfirmation, sendReminderEmail, sendAdminNotification } from '@/lib/emailjs'
 
 export default function RSVPForm() {
   const [formData, setFormData] = useState<RSVPData>({
@@ -57,13 +57,23 @@ export default function RSVPForm() {
 
       console.log('RSVP saved to database:', data)
 
-      // Send confirmation email
+      // Send confirmation email to the user
       const emailResult = await sendRSVPConfirmation({
         first_name: formData.first_name,
         last_name: formData.last_name,
         email: formData.email,
         graduation_date: '2025-08-02'
       })
+
+      // Send admin notification email
+      const adminResult = await sendAdminNotification({
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        email: formData.email,
+        phone: formData.phone
+      })
+
+      console.log('Admin notification result:', adminResult)
 
       if (emailResult.success) {
         // Send reminder email (scheduled for 1 week before graduation)
