@@ -119,4 +119,44 @@ export const sendReminderEmail = async (data: {
     console.error('Reminder Email Error:', error)
     return { success: false, error }
   }
+}
+
+export const sendAdminNotification = async (data: {
+  first_name: string
+  last_name: string
+  email: string
+  phone?: string
+}) => {
+  try {
+    // Check if EmailJS is properly configured
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+
+    if (!serviceId || !templateId || !publicKey || 
+        serviceId === 'placeholder_service' || 
+        templateId === 'placeholder_template' || 
+        publicKey === 'placeholder_key') {
+      console.warn('EmailJS not properly configured - skipping admin notification')
+      return { 
+        success: false, 
+        error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
+      }
+    }
+
+    const response = await emailjs.send(
+      serviceId,
+      templateId,
+      {
+        to_name: 'Kenneth',
+        to_email: 'kenneth.agent.bot@gmail.com',
+        graduation_date: 'August 2nd, 2025',
+        message: `New RSVP received from ${data.first_name} ${data.last_name} (${data.email})${data.phone ? ` - Phone: ${data.phone}` : ''}. Total RSVPs can be viewed in the admin dashboard.`
+      }
+    )
+    return { success: true, response }
+  } catch (error) {
+    console.error('Admin Notification Error:', error)
+    return { success: false, error }
+  }
 } 

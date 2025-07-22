@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import RSVPForm from '@/components/RSVPForm'
+import { setupRSVPSubscription, cleanupRSVPSubscription } from '@/lib/realtime-subscription'
 
 // Force dynamic rendering to avoid build-time data fetching
 export const dynamic = 'force-dynamic'
@@ -10,6 +11,16 @@ export default function Home() {
   useEffect(() => {
     // Remove preload class when component mounts
     document.body.classList.remove('is-preload')
+    
+    // Setup real-time subscription for new RSVPs
+    const subscription = setupRSVPSubscription()
+    
+    // Cleanup subscription on unmount
+    return () => {
+      if (subscription) {
+        cleanupRSVPSubscription(subscription)
+      }
+    }
   }, [])
 
   return (
