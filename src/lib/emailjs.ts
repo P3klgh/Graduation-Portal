@@ -4,7 +4,7 @@ import emailjs from '@emailjs/browser'
 const initializeEmailJS = () => {
   try {
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-    if (publicKey && publicKey !== 'placeholder_key') {
+    if (publicKey && publicKey !== 'placeholder_key' && typeof emailjs !== 'undefined') {
       emailjs.init(publicKey)
       return true
     }
@@ -17,6 +17,19 @@ const initializeEmailJS = () => {
 
 // Initialize on module load
 const emailjsInitialized = initializeEmailJS()
+
+// Helper function to safely send emails
+const safeEmailSend = async (serviceId: string, templateId: string, templateParams: any) => {
+  try {
+    if (typeof emailjs === 'undefined' || !emailjsInitialized) {
+      throw new Error('EmailJS not available')
+    }
+    return await emailjs.send(serviceId, templateId, templateParams)
+  } catch (error) {
+    console.error('EmailJS send error:', error)
+    throw error
+  }
+}
 
 export const sendRSVPConfirmation = async (data: {
   first_name: string
@@ -42,7 +55,7 @@ export const sendRSVPConfirmation = async (data: {
       }
     }
 
-    const response = await emailjs.send(
+    const response = await safeEmailSend(
       serviceId,
       templateId,
       {
@@ -79,7 +92,7 @@ export const sendBulkNotification = async (emails: string[], message: string, su
     }
 
     const promises = emails.map(email => 
-      emailjs.send(
+      safeEmailSend(
         serviceId,
         templateId,
         {
@@ -122,7 +135,7 @@ export const sendReminderEmail = async (data: {
       }
     }
 
-    const response = await emailjs.send(
+    const response = await safeEmailSend(
       serviceId,
       templateId,
       {
@@ -163,7 +176,7 @@ export const sendAdminNotification = async (data: {
       }
     }
 
-    const response = await emailjs.send(
+    const response = await safeEmailSend(
       serviceId,
       templateId,
       {
