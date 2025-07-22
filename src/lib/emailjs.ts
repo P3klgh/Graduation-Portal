@@ -1,29 +1,41 @@
-import emailjs from '@emailjs/browser'
+// Check if EmailJS should be used at all
+const shouldUseEmailJS = () => {
+  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+  
+  return serviceId && templateId && publicKey && 
+    serviceId !== 'placeholder_service' && 
+    templateId !== 'placeholder_template' && 
+    publicKey !== 'placeholder_key'
+}
 
-// Initialize EmailJS with proper error handling
-const initializeEmailJS = () => {
+// Only import EmailJS if it's properly configured
+let emailjs: any = null
+let emailjsInitialized = false
+
+if (shouldUseEmailJS()) {
   try {
+    emailjs = require('@emailjs/browser')
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-    if (publicKey && publicKey !== 'placeholder_key' && typeof emailjs !== 'undefined') {
+    if (publicKey) {
       emailjs.init(publicKey)
-      return true
+      emailjsInitialized = true
     }
-    return false
   } catch (error) {
-    console.warn('Failed to initialize EmailJS:', error)
-    return false
+    console.warn('EmailJS not available or failed to initialize:', error)
+    emailjs = null
+    emailjsInitialized = false
   }
 }
 
-// Initialize on module load
-const emailjsInitialized = initializeEmailJS()
-
 // Helper function to safely send emails
 const safeEmailSend = async (serviceId: string, templateId: string, templateParams: any) => {
+  if (!emailjs || !emailjsInitialized) {
+    throw new Error('EmailJS not available')
+  }
+  
   try {
-    if (typeof emailjs === 'undefined' || !emailjsInitialized) {
-      throw new Error('EmailJS not available')
-    }
     return await emailjs.send(serviceId, templateId, templateParams)
   } catch (error) {
     console.error('EmailJS send error:', error)
@@ -37,18 +49,21 @@ export const sendRSVPConfirmation = async (data: {
   email: string
   graduation_date?: string
 }) => {
+  // Early return if EmailJS is not available
+  if (!emailjs || !emailjsInitialized) {
+    console.warn('EmailJS not available - skipping email send')
+    return { 
+      success: false, 
+      error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
+    }
+  }
+
   try {
-    // Check if EmailJS is properly configured
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
-    if (!serviceId || !templateId || !publicKey || 
-        serviceId === 'placeholder_service' || 
-        templateId === 'placeholder_template' || 
-        publicKey === 'placeholder_key' ||
-        !emailjsInitialized) {
-      console.warn('EmailJS not properly configured - skipping email send')
+    if (!serviceId || !templateId) {
+      console.warn('EmailJS service or template not configured')
       return { 
         success: false, 
         error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
@@ -73,18 +88,21 @@ export const sendRSVPConfirmation = async (data: {
 }
 
 export const sendBulkNotification = async (emails: string[], message: string, subject: string) => {
+  // Early return if EmailJS is not available
+  if (!emailjs || !emailjsInitialized) {
+    console.warn('EmailJS not available - skipping bulk email send')
+    return { 
+      success: false, 
+      error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
+    }
+  }
+
   try {
-    // Check if EmailJS is properly configured
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_BULK_TEMPLATE_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
-    if (!serviceId || !templateId || !publicKey || 
-        serviceId === 'placeholder_service' || 
-        templateId === 'placeholder_template' || 
-        publicKey === 'placeholder_key' ||
-        !emailjsInitialized) {
-      console.warn('EmailJS not properly configured - skipping bulk email send')
+    if (!serviceId || !templateId) {
+      console.warn('EmailJS service or template not configured')
       return { 
         success: false, 
         error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
@@ -117,18 +135,21 @@ export const sendReminderEmail = async (data: {
   email: string
   graduation_date?: string
 }) => {
+  // Early return if EmailJS is not available
+  if (!emailjs || !emailjsInitialized) {
+    console.warn('EmailJS not available - skipping reminder email send')
+    return { 
+      success: false, 
+      error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
+    }
+  }
+
   try {
-    // Check if EmailJS is properly configured
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_REMINDER_TEMPLATE_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
-    if (!serviceId || !templateId || !publicKey || 
-        serviceId === 'placeholder_service' || 
-        templateId === 'placeholder_template' || 
-        publicKey === 'placeholder_key' ||
-        !emailjsInitialized) {
-      console.warn('EmailJS not properly configured - skipping reminder email send')
+    if (!serviceId || !templateId) {
+      console.warn('EmailJS service or template not configured')
       return { 
         success: false, 
         error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
@@ -158,18 +179,21 @@ export const sendAdminNotification = async (data: {
   email: string
   phone?: string
 }) => {
+  // Early return if EmailJS is not available
+  if (!emailjs || !emailjsInitialized) {
+    console.warn('EmailJS not available - skipping admin notification')
+    return { 
+      success: false, 
+      error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
+    }
+  }
+
   try {
-    // Check if EmailJS is properly configured
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
-    if (!serviceId || !templateId || !publicKey || 
-        serviceId === 'placeholder_service' || 
-        templateId === 'placeholder_template' || 
-        publicKey === 'placeholder_key' ||
-        !emailjsInitialized) {
-      console.warn('EmailJS not properly configured - skipping admin notification')
+    if (!serviceId || !templateId) {
+      console.warn('EmailJS service or template not configured')
       return { 
         success: false, 
         error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
