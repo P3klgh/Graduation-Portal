@@ -18,7 +18,7 @@ const initializeEmailJS = () => {
 const emailjsInitialized = initializeEmailJS()
 
 // Simple EmailJS send function with error handling
-const sendEmail = async (serviceID: string, templateID: string, templateParams: any, userID: string) => {
+const sendEmail = async (serviceID: string, templateID: string, templateParams: Record<string, string>, userID: string) => {
   try {
     if (!emailjsInitialized) {
       throw new Error('EmailJS not initialized')
