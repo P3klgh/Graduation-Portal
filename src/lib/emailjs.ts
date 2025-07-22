@@ -1,6 +1,6 @@
 import emailjs from '@emailjs/browser'
 
-// Initialize EmailJS with proper error handling
+// Initialize EmailJS
 const initializeEmailJS = () => {
   try {
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
@@ -15,19 +15,20 @@ const initializeEmailJS = () => {
   }
 }
 
-// Initialize on module load
 const emailjsInitialized = initializeEmailJS()
 
-// Helper function to safely send emails
-const safeEmailSend = async (serviceId: string, templateId: string, templateParams: any) => {
+// Simple EmailJS send function with error handling
+const sendEmail = async (serviceID: string, templateID: string, templateParams: any, userID: string) => {
   try {
     if (!emailjsInitialized) {
-      throw new Error('EmailJS not available')
+      throw new Error('EmailJS not initialized')
     }
-    return await emailjs.send(serviceId, templateId, templateParams)
+    
+    const response = await emailjs.send(serviceID, templateID, templateParams, userID)
+    return { success: true, response }
   } catch (error) {
     console.error('EmailJS send error:', error)
-    throw error
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
@@ -37,76 +38,58 @@ export const sendRSVPConfirmation = async (data: {
   email: string
   graduation_date?: string
 }) => {
-  try {
-    // Check if EmailJS is properly configured
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+  const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+  const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+  const userID = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
-    if (!serviceId || !templateId || !publicKey || 
-        serviceId === 'placeholder_service' || 
-        templateId === 'placeholder_template' || 
-        publicKey === 'placeholder_key' ||
-        !emailjsInitialized) {
-      console.warn('EmailJS not properly configured - skipping email send')
-      return { 
-        success: false, 
-        error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
-      }
+  if (!serviceID || !templateID || !userID || 
+      serviceID === 'placeholder_service' || 
+      templateID === 'placeholder_template' || 
+      userID === 'placeholder_key') {
+    return { 
+      success: false, 
+      error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
     }
-
-    const response = await safeEmailSend(
-      serviceId,
-      templateId,
-      {
-        to_name: `${data.first_name} ${data.last_name}`,
-        to_email: data.email,
-        graduation_date: data.graduation_date || 'TBD',
-        message: `Thank you for RSVPing to our graduation ceremony! We'll keep you updated with all the details.`
-      }
-    )
-    return { success: true, response }
-  } catch (error) {
-    console.error('EmailJS Error:', error)
-    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
   }
+
+  const templateParams = {
+    to_name: `${data.first_name} ${data.last_name}`,
+    to_email: data.email,
+    graduation_date: data.graduation_date || 'TBD',
+    message: `Thank you for RSVPing to our graduation ceremony! We'll keep you updated with all the details.`
+  }
+
+  return await sendEmail(serviceID, templateID, templateParams, userID)
 }
 
 export const sendBulkNotification = async (emails: string[], message: string, subject: string) => {
-  try {
-    // Check if EmailJS is properly configured
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_BULK_TEMPLATE_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+  const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+  const templateID = process.env.NEXT_PUBLIC_EMAILJS_BULK_TEMPLATE_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+  const userID = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
-    if (!serviceId || !templateId || !publicKey || 
-        serviceId === 'placeholder_service' || 
-        templateId === 'placeholder_template' || 
-        publicKey === 'placeholder_key' ||
-        !emailjsInitialized) {
-      console.warn('EmailJS not properly configured - skipping bulk email send')
-      return { 
-        success: false, 
-        error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
-      }
+  if (!serviceID || !templateID || !userID || 
+      serviceID === 'placeholder_service' || 
+      templateID === 'placeholder_template' || 
+      userID === 'placeholder_key') {
+    return { 
+      success: false, 
+      error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
     }
+  }
 
-    const promises = emails.map(email => 
-      safeEmailSend(
-        serviceId,
-        templateId,
-        {
-          to_email: email,
-          subject: subject,
-          message: message
-        }
-      )
-    )
-    
+  const promises = emails.map(email => {
+    const templateParams = {
+      to_email: email,
+      subject: subject,
+      message: message
+    }
+    return sendEmail(serviceID, templateID, templateParams, userID)
+  })
+  
+  try {
     const responses = await Promise.all(promises)
     return { success: true, responses }
   } catch (error) {
-    console.error('Bulk Email Error:', error)
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
@@ -117,39 +100,28 @@ export const sendReminderEmail = async (data: {
   email: string
   graduation_date?: string
 }) => {
-  try {
-    // Check if EmailJS is properly configured
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_REMINDER_TEMPLATE_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+  const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+  const templateID = process.env.NEXT_PUBLIC_EMAILJS_REMINDER_TEMPLATE_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+  const userID = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
-    if (!serviceId || !templateId || !publicKey || 
-        serviceId === 'placeholder_service' || 
-        templateId === 'placeholder_template' || 
-        publicKey === 'placeholder_key' ||
-        !emailjsInitialized) {
-      console.warn('EmailJS not properly configured - skipping reminder email send')
-      return { 
-        success: false, 
-        error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
-      }
+  if (!serviceID || !templateID || !userID || 
+      serviceID === 'placeholder_service' || 
+      templateID === 'placeholder_template' || 
+      userID === 'placeholder_key') {
+    return { 
+      success: false, 
+      error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
     }
-
-    const response = await safeEmailSend(
-      serviceId,
-      templateId,
-      {
-        to_name: `${data.first_name} ${data.last_name}`,
-        to_email: data.email,
-        graduation_date: data.graduation_date || 'TBD',
-        message: `This is a friendly reminder that Kenneth's Graduation Ceremony is coming up! Please make sure to mark your calendar and arrive on time.`
-      }
-    )
-    return { success: true, response }
-  } catch (error) {
-    console.error('Reminder Email Error:', error)
-    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
   }
+
+  const templateParams = {
+    to_name: `${data.first_name} ${data.last_name}`,
+    to_email: data.email,
+    graduation_date: data.graduation_date || 'TBD',
+    message: `This is a friendly reminder that Kenneth's Graduation Ceremony is coming up! Please make sure to mark your calendar and arrive on time.`
+  }
+
+  return await sendEmail(serviceID, templateID, templateParams, userID)
 }
 
 export const sendAdminNotification = async (data: {
@@ -158,37 +130,26 @@ export const sendAdminNotification = async (data: {
   email: string
   phone?: string
 }) => {
-  try {
-    // Check if EmailJS is properly configured
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+  const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+  const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+  const userID = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
-    if (!serviceId || !templateId || !publicKey || 
-        serviceId === 'placeholder_service' || 
-        templateId === 'placeholder_template' || 
-        publicKey === 'placeholder_key' ||
-        !emailjsInitialized) {
-      console.warn('EmailJS not properly configured - skipping admin notification')
-      return { 
-        success: false, 
-        error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
-      }
+  if (!serviceID || !templateID || !userID || 
+      serviceID === 'placeholder_service' || 
+      templateID === 'placeholder_template' || 
+      userID === 'placeholder_key') {
+    return { 
+      success: false, 
+      error: 'EmailJS not configured. Please set up EmailJS environment variables.' 
     }
-
-    const response = await safeEmailSend(
-      serviceId,
-      templateId,
-      {
-        to_name: 'Kenneth',
-        to_email: 'kenneth.agent.bot@gmail.com',
-        graduation_date: 'August 2nd, 2025',
-        message: `New RSVP received from ${data.first_name} ${data.last_name} (${data.email})${data.phone ? ` - Phone: ${data.phone}` : ''}. Total RSVPs can be viewed in the admin dashboard.`
-      }
-    )
-    return { success: true, response }
-  } catch (error) {
-    console.error('Admin Notification Error:', error)
-    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
   }
+
+  const templateParams = {
+    to_name: 'Kenneth',
+    to_email: 'kenneth.agent.bot@gmail.com',
+    graduation_date: 'August 2nd, 2025',
+    message: `New RSVP received from ${data.first_name} ${data.last_name} (${data.email})${data.phone ? ` - Phone: ${data.phone}` : ''}. Total RSVPs can be viewed in the admin dashboard.`
+  }
+
+  return await sendEmail(serviceID, templateID, templateParams, userID)
 } 
