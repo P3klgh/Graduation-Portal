@@ -57,27 +57,42 @@ export default function RSVPForm() {
 
       console.log('RSVP saved to database:', data)
 
-      // Send confirmation email to the user
-      const emailResult = await sendRSVPConfirmation({
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        email: formData.email,
-        graduation_date: '2025-08-02'
-      })
+      // Check if EmailJS is properly configured before sending emails
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      
+      const emailjsConfigured = serviceId && templateId && publicKey && 
+        serviceId !== 'placeholder_service' && 
+        templateId !== 'placeholder_template' && 
+        publicKey !== 'placeholder_key'
 
-      // Send admin notification email
-      try {
-        const adminResult = await sendAdminNotification({
+      // Send confirmation email to the user
+      let emailResult: { success: boolean; error?: string; response?: any } = { success: false, error: 'EmailJS not configured' }
+      if (emailjsConfigured) {
+        emailResult = await sendRSVPConfirmation({
           first_name: formData.first_name,
           last_name: formData.last_name,
           email: formData.email,
-          phone: formData.phone
+          graduation_date: '2025-08-02'
         })
+      }
 
-        console.log('Admin notification result:', adminResult)
-      } catch (error) {
-        console.error('Error sending admin notification:', error)
-        // Don't fail the form submission if admin notification fails
+      // Send admin notification email
+      if (emailjsConfigured) {
+        try {
+          const adminResult = await sendAdminNotification({
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            email: formData.email,
+            phone: formData.phone
+          })
+
+          console.log('Admin notification result:', adminResult)
+        } catch (error) {
+          console.error('Error sending admin notification:', error)
+          // Don't fail the form submission if admin notification fails
+        }
       }
 
       if (emailResult.success) {

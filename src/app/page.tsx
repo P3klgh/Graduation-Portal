@@ -53,7 +53,7 @@ export default function Home() {
           position: 'relative', 
           zIndex: 5, 
           width: '100%', 
-          maxWidth: '600px', 
+          maxWidth: '500px', 
           margin: '0 auto',
           padding: '0 1rem',
           flex: '1 1 auto',
