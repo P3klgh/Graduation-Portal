@@ -5,10 +5,13 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 // Debug logging
+console.log('=== ENVIRONMENT DEBUG ===')
 console.log('Supabase URL:', supabaseUrl ? 'Set' : 'Not set')
 console.log('Supabase Anon Key:', supabaseAnonKey ? 'Set' : 'Not set')
 console.log('Full Supabase URL:', supabaseUrl)
 console.log('Anon Key length:', supabaseAnonKey?.length || 0)
+console.log('All env vars:', Object.keys(process.env).filter(key => key.startsWith('NEXT_PUBLIC_')))
+console.log('=== END DEBUG ===')
 
 // Environment variables are properly configured
 export const supabase = supabaseUrl && supabaseAnonKey && 
