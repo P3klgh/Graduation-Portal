@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { supabase, RSVPData } from '@/lib/supabase'
 import { sendRSVPConfirmation, sendReminderEmail, sendAdminNotification } from '@/lib/emailjs'
+import { toast } from 'react-toastify'
 
 export default function RSVPForm() {
   const [formData, setFormData] = useState<RSVPData>({
@@ -13,7 +14,6 @@ export default function RSVPForm() {
   })
   
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target
@@ -28,7 +28,6 @@ export default function RSVPForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setMessage(null)
 
     try {
       // Check if Supabase is available
@@ -37,10 +36,7 @@ export default function RSVPForm() {
         console.log('Environment check:')
         console.log('- NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Not set')
         console.log('- NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Not set')
-        setMessage({
-          type: 'error',
-          text: 'Database connection not configured. Please contact the administrator.'
-        })
+        toast.error('❌ Database connection not configured. Please contact the administrator.')
         return
       }
 
@@ -96,22 +92,13 @@ export default function RSVPForm() {
         })
 
         if (reminderResult.success) {
-          setMessage({
-            type: 'success',
-            text: 'Thank you for your RSVP! You will receive a confirmation email shortly and a reminder email one week before the event.'
-          })
+          toast.success('🎓 Thank you for your RSVP! You will receive a confirmation email shortly and a reminder email one week before the event.')
         } else {
           console.error('Reminder email error:', reminderResult.error)
           if (reminderResult.error === 'EmailJS not configured. Please set up EmailJS environment variables.') {
-            setMessage({
-              type: 'success',
-              text: 'Thank you for your RSVP! Your submission has been saved. Email notifications are not configured at this time.'
-            })
+            toast.success('🎓 Thank you for your RSVP! Your submission has been saved. Email notifications are not configured at this time.')
           } else {
-            setMessage({
-              type: 'success',
-              text: 'Thank you for your RSVP! You will receive a confirmation email shortly.'
-            })
+            toast.success('🎓 Thank you for your RSVP! You will receive a confirmation email shortly.')
           }
         }
         
@@ -125,23 +112,14 @@ export default function RSVPForm() {
       } else {
         console.error('Email error:', emailResult.error)
         if (emailResult.error === 'EmailJS not configured. Please set up EmailJS environment variables.') {
-          setMessage({
-            type: 'success',
-            text: 'Thank you for your RSVP! Your submission has been saved. Email notifications are not configured at this time.'
-          })
+          toast.success('🎓 Thank you for your RSVP! Your submission has been saved. Email notifications are not configured at this time.')
         } else {
-          setMessage({
-            type: 'error',
-            text: 'RSVP submitted successfully, but there was an issue sending the confirmation email.'
-          })
+          toast.warning('⚠️ RSVP submitted successfully, but there was an issue sending the confirmation email.')
         }
       }
     } catch (error) {
       console.error('Submission error:', error)
-      setMessage({
-        type: 'error',
-        text: error instanceof Error ? error.message : 'There was an error submitting your RSVP. Please try again.'
-      })
+      toast.error(`❌ ${error instanceof Error ? error.message : 'There was an error submitting your RSVP. Please try again.'}`)
     } finally {
       setIsSubmitting(false)
     }
@@ -164,20 +142,6 @@ export default function RSVPForm() {
       <h3 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: '1.3em', color: 'white', fontWeight: 'bold' }}>
         RSVP for Graduation 2025
       </h3>
-      
-      {message && (
-        <div style={{
-          padding: '0.75rem',
-          marginBottom: '0.75rem',
-          borderRadius: '5px',
-          backgroundColor: message.type === 'success' ? 'rgba(76, 175, 80, 0.2)' : 'rgba(244, 67, 54, 0.2)',
-          border: `1px solid ${message.type === 'success' ? '#4CAF50' : '#F44336'}`,
-          color: message.type === 'success' ? '#4CAF50' : '#F44336',
-          fontSize: '0.9em'
-        }}>
-          {message.text}
-        </div>
-      )}
       
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '0.5rem' }}>
