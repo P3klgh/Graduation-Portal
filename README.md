@@ -43,25 +43,15 @@ npm install
 
 ### 3. Set Up Environment Variables
 
+**⚠️ SECURITY WARNING: Never commit real API keys to the repository!**
+
 Copy the example environment file and fill in your credentials:
 
 ```bash
 cp env.example .env.local
 ```
 
-Update `.env.local` with your actual values:
-
-```env
-# Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-
-# EmailJS Configuration
-NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
-NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_emailjs_service_id
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
-NEXT_PUBLIC_EMAILJS_BULK_TEMPLATE_ID=your_emailjs_bulk_template_id
-```
+**Important:** The `.env.local` file is already in `.gitignore` and should never be committed to the repository.
 
 ### 4. Set Up Supabase Database
 
