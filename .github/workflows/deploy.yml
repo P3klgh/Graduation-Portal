@@ -1,5 +1,8 @@
 name: Build and Deploy
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [ main ]
@@ -41,6 +44,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      pages: write
 
     steps:
     - name: Checkout code
