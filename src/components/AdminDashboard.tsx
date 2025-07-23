@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect } from 'react'
 import { supabase, RSVPData } from '@/lib/supabase'
-import { sendBulkNotification } from '@/lib/emailjs'
+// Email functionality removed for simplified implementation
 
 export default function AdminDashboard() {
   const [rsvps, setRsvps] = useState<RSVPData[]>([])
   const [loading, setLoading] = useState(true)
   const [notificationMessage, setNotificationMessage] = useState('')
   const [notificationSubject, setNotificationSubject] = useState('')
-  const [sendingNotification, setSendingNotification] = useState(false)
+  // Removed sendingNotification state since bulk email is disabled
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   useEffect(() => {
@@ -42,47 +42,10 @@ export default function AdminDashboard() {
 
   const handleSendNotification = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!notificationMessage.trim() || !notificationSubject.trim()) {
-      setMessage({
-        type: 'error',
-        text: 'Please fill in both subject and message'
-      })
-      return
-    }
-
-    setSendingNotification(true)
-    setMessage(null)
-
-    try {
-      const emails = rsvps.map(rsvp => rsvp.email)
-      const result = await sendBulkNotification(
-        emails,
-        notificationMessage,
-        notificationSubject
-      )
-
-      if (result.success) {
-        setMessage({
-          type: 'success',
-          text: `Notification sent successfully to ${emails.length} recipients`
-        })
-        setNotificationMessage('')
-        setNotificationSubject('')
-      } else {
-        setMessage({
-          type: 'error',
-          text: 'Failed to send notification'
-        })
-      }
-    } catch (error) {
-      console.error('Notification error:', error)
-      setMessage({
-        type: 'error',
-        text: 'Error sending notification'
-      })
-    } finally {
-      setSendingNotification(false)
-    }
+    setMessage({
+      type: 'error',
+      text: 'Bulk email functionality has been removed for simplified implementation'
+    })
   }
 
   const exportToCSV = () => {
@@ -221,30 +184,18 @@ export default function AdminDashboard() {
             </div>
             <button
               type="submit"
-              disabled={sendingNotification}
+              disabled={true}
               style={{
-                background: 'rgba(255, 255, 255, 0.2)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
-                color: 'white',
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                color: 'rgba(255, 255, 255, 0.5)',
                 padding: '0.75rem 2rem',
                 borderRadius: '5px',
-                cursor: 'pointer',
+                cursor: 'not-allowed',
                 transition: 'all 0.3s ease'
               }}
-              onMouseOver={(e) => {
-                if (!sendingNotification) {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.5)';
-                }
-              }}
-              onMouseOut={(e) => {
-                if (!sendingNotification) {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-                }
-              }}
             >
-              {sendingNotification ? 'Sending...' : 'Send Notification'}
+              Bulk Email Disabled
             </button>
           </form>
         </div>

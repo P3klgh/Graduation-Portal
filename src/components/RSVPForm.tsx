@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { supabase, RSVPData } from '@/lib/supabase'
-import { sendRSVPConfirmation, sendReminderEmail, sendAdminNotification } from '@/lib/emailjs'
+import { sendRSVPEmail } from '@/lib/emailjs'
 import { toast } from 'react-toastify'
 
 export default function RSVPForm() {
@@ -32,75 +32,76 @@ export default function RSVPForm() {
     try {
       // Check if Supabase is available
       if (!supabase) {
-        console.warn('Supabase not configured - skipping database save')
-        console.log('Environment check:')
-        console.log('- NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Not set')
-        console.log('- NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Not set')
         toast.error('❌ Database connection not configured. Please contact the administrator.')
         return
       }
 
+      // Check if user already exists (anti-spam feature)
+      const { data: existingUser, error: checkError } = await supabase
+        .from('rsvp_submissions')
+        .select('id, created_at')
+        .eq('email', formData.email)
+        .single()
+
+      if (checkError && checkError.code !== 'PGRST116') { // PGRST116 = no rows returned
+        console.error('Error checking for existing user:', checkError)
+        throw new Error(`Database error: ${checkError.message}`)
+      }
+
+      if (existingUser) {
+        // User already exists - show message with original submission date
+        const originalDate = new Date(existingUser.created_at).toLocaleDateString()
+        toast.info(`ℹ️ You have already RSVP'd to this event on ${originalDate}. Thank you for your interest!`)
+        
+        // Reset form
+        setFormData({
+          first_name: '',
+          last_name: '',
+          email: '',
+          phone: ''
+        })
+        return
+      }
+
       // Insert RSVP data into Supabase
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('rsvp_submissions')
         .insert([formData])
         .select()
 
       if (error) {
         console.error('Supabase error:', error)
+        
+        // Check if it's a duplicate email error (constraint violation)
+        if (error.code === '23505' && error.message.includes('unique_email')) {
+          toast.info('ℹ️ You have already RSVP\'d to this event. Thank you for your interest!')
+          
+          // Reset form
+          setFormData({
+            first_name: '',
+            last_name: '',
+            email: '',
+            phone: ''
+          })
+          return
+        }
+        
         throw new Error(`Database error: ${error.message}`)
       }
 
-      console.log('RSVP saved to database:', data)
+      // RSVP saved successfully
 
-      // Send confirmation email to the user
-      let emailResult: { success: boolean; error?: string; response?: unknown } = { success: false, error: 'EmailJS not configured' }
-      try {
-        emailResult = await sendRSVPConfirmation({
-          first_name: formData.first_name,
-          last_name: formData.last_name,
-          email: formData.email,
-          graduation_date: '2025-08-02'
-        })
-      } catch (error) {
-        console.error('Error sending confirmation email:', error)
-        emailResult = { success: false, error: 'Failed to send confirmation email' }
-      }
-
-      // Send admin notification email
-      try {
-        const adminResult = await sendAdminNotification({
-          first_name: formData.first_name,
-          last_name: formData.last_name,
-          email: formData.email,
-          phone: formData.phone
-        })
-
-        console.log('Admin notification result:', adminResult)
-      } catch (error) {
-        console.error('Error sending admin notification:', error)
-        // Don't fail the form submission if admin notification fails
-      }
+      // Send confirmation email to the user (only for new submissions)
+      const emailResult = await sendRSVPEmail({
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        email: formData.email,
+        phone: formData.phone,
+        graduation_date: 'August 2nd, 2025'
+      })
 
       if (emailResult.success) {
-        // Send reminder email (scheduled for 1 week before graduation)
-        const reminderResult = await sendReminderEmail({
-          first_name: formData.first_name,
-          last_name: formData.last_name,
-          email: formData.email,
-          graduation_date: '2025-08-02'
-        })
-
-        if (reminderResult.success) {
-          toast.success('🎓 Thank you for your RSVP! You will receive a confirmation email shortly and a reminder email one week before the event.')
-        } else {
-          console.error('Reminder email error:', reminderResult.error)
-          if (reminderResult.error === 'EmailJS not configured. Please set up EmailJS environment variables.') {
-            toast.success('🎓 Thank you for your RSVP! Your submission has been saved. Email notifications are not configured at this time.')
-          } else {
-            toast.success('🎓 Thank you for your RSVP! You will receive a confirmation email shortly.')
-          }
-        }
+        toast.success('🎓 Thank you for your RSVP! You will receive a confirmation email shortly.')
         
         // Reset form
         setFormData({
@@ -111,7 +112,7 @@ export default function RSVPForm() {
         })
       } else {
         console.error('Email error:', emailResult.error)
-        if (emailResult.error === 'EmailJS not configured. Please set up EmailJS environment variables.') {
+        if (emailResult.error?.includes('not configured')) {
           toast.success('🎓 Thank you for your RSVP! Your submission has been saved. Email notifications are not configured at this time.')
         } else {
           toast.warning('⚠️ RSVP submitted successfully, but there was an issue sending the confirmation email.')

@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import RSVPForm from '@/components/RSVPForm'
 import { setupRSVPSubscription, cleanupRSVPSubscription } from '@/lib/realtime-subscription'
+// EmailJS is now properly configured and working
 
 // Force dynamic rendering to avoid build-time data fetching
 export const dynamic = 'force-dynamic'
