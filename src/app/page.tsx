@@ -67,11 +67,55 @@ export default function Home() {
           <RSVPForm />
         </div>
 
+        {/* Portfolio Button */}
+        <div style={{ 
+          position: 'relative', 
+          zIndex: 10,
+          textAlign: 'center',
+          marginTop: '1rem',
+          flexShrink: 0,
+          padding: '0.5rem 0'
+        }}>
+          <a 
+            href="https://thekencave.com/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-block',
+              padding: '0.75rem 1.5rem',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              color: '#ffffff',
+              textDecoration: 'none',
+              borderRadius: '4px',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              fontSize: '0.9rem',
+              fontWeight: '500',
+              transition: 'all 0.3s ease',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+            }}
+            onMouseEnter={(e) => {
+              const target = e.target as HTMLAnchorElement
+              target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)'
+              target.style.transform = 'translateY(-2px)'
+              target.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.15)'
+            }}
+            onMouseLeave={(e) => {
+              const target = e.target as HTMLAnchorElement
+              target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
+              target.style.transform = 'translateY(0)'
+              target.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)'
+            }}
+          >
+            🎓 View My Portfolio
+          </a>
+        </div>
+
         {/* Footer */}
         <footer id="footer" style={{ 
           position: 'relative', 
           zIndex: 10,
-          marginTop: '1rem',
+          marginTop: '0.5rem',
           flexShrink: 0,
           textAlign: 'center',
           padding: '0.5rem 0'
