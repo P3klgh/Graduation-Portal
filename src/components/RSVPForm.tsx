@@ -5,6 +5,11 @@ import { supabase, RSVPData } from '@/lib/supabase'
 import { sendRSVPEmail } from '@/lib/emailjs'
 import { toast } from 'react-toastify'
 
+// Regex patterns for validation
+const NAME_REGEX = /^[A-Za-zÀ-ÿ\s'-]+$/
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+const PHONE_REGEX = /^[\+]?[1-9][\d]{0,15}$/
+
 export default function RSVPForm() {
   const [formData, setFormData] = useState<RSVPData>({
     first_name: '',
@@ -14,6 +19,48 @@ export default function RSVPForm() {
   })
   
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<{[key: string]: string}>({})
+
+  // Validation functions
+  const validateName = (name: string): boolean => {
+    if (!name.trim()) return false
+    return NAME_REGEX.test(name.trim())
+  }
+
+  const validateEmail = (email: string): boolean => {
+    if (!email.trim()) return false
+    return EMAIL_REGEX.test(email.trim())
+  }
+
+  const validatePhone = (phone: string): boolean => {
+    if (!phone.trim()) return false
+    // Remove all non-digit characters except + for validation
+    const cleanPhone = phone.replace(/[^\d+]/g, '')
+    return PHONE_REGEX.test(cleanPhone) && cleanPhone.length >= 10
+  }
+
+  const validateForm = (): boolean => {
+    const newErrors: {[key: string]: string} = {}
+
+    if (!validateName(formData.first_name || '')) {
+      newErrors.first_name = 'First name must contain only letters, spaces, hyphens, and apostrophes'
+    }
+
+    if (!validateName(formData.last_name || '')) {
+      newErrors.last_name = 'Last name must contain only letters, spaces, hyphens, and apostrophes'
+    }
+
+    if (!validateEmail(formData.email || '')) {
+      newErrors.email = 'Please enter a valid email address'
+    }
+
+    if (!validatePhone(formData.phone || '')) {
+      newErrors.phone = 'Please enter a valid phone number (minimum 10 digits)'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target
@@ -23,10 +70,54 @@ export default function RSVPForm() {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }))
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }))
+    }
+  }
+
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    let fieldError = ''
+
+    switch (name) {
+      case 'first_name':
+        if (!validateName(value)) {
+          fieldError = 'First name must contain only letters, spaces, hyphens, and apostrophes'
+        }
+        break
+      case 'last_name':
+        if (!validateName(value)) {
+          fieldError = 'Last name must contain only letters, spaces, hyphens, and apostrophes'
+        }
+        break
+      case 'email':
+        if (!validateEmail(value)) {
+          fieldError = 'Please enter a valid email address'
+        }
+        break
+      case 'phone':
+        if (!validatePhone(value)) {
+          fieldError = 'Please enter a valid phone number (minimum 10 digits)'
+        }
+        break
+    }
+
+    if (fieldError) {
+      setErrors(prev => ({ ...prev, [name]: fieldError }))
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Validate form before submission
+    if (!validateForm()) {
+      toast.error('❌ Please fix the validation errors before submitting.')
+      return
+    }
+    
     setIsSubmitting(true)
 
     try {
@@ -155,11 +246,12 @@ export default function RSVPForm() {
             name="first_name"
             value={formData.first_name}
             onChange={handleInputChange}
+            onBlur={handleInputBlur}
             placeholder="Write your first name"
             required
             style={{
               background: 'rgba(255, 255, 255, 0.1)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              border: errors.first_name ? '1px solid #ff6b6b' : '1px solid rgba(255, 255, 255, 0.2)',
               color: 'white',
               padding: '0.5rem',
               borderRadius: '5px',
@@ -167,6 +259,11 @@ export default function RSVPForm() {
               fontSize: '0.9em'
             }}
           />
+          {errors.first_name && (
+            <div style={{ color: '#ff6b6b', fontSize: '0.8em', marginTop: '0.25rem' }}>
+              {errors.first_name}
+            </div>
+          )}
         </div>
         
         <div style={{ marginBottom: '0.5rem' }}>
@@ -179,11 +276,12 @@ export default function RSVPForm() {
             name="last_name"
             value={formData.last_name}
             onChange={handleInputChange}
+            onBlur={handleInputBlur}
             placeholder="Write your last name"
             required
             style={{
               background: 'rgba(255, 255, 255, 0.1)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              border: errors.last_name ? '1px solid #ff6b6b' : '1px solid rgba(255, 255, 255, 0.2)',
               color: 'white',
               padding: '0.5rem',
               borderRadius: '5px',
@@ -191,6 +289,11 @@ export default function RSVPForm() {
               fontSize: '0.9em'
             }}
           />
+          {errors.last_name && (
+            <div style={{ color: '#ff6b6b', fontSize: '0.8em', marginTop: '0.25rem' }}>
+              {errors.last_name}
+            </div>
+          )}
         </div>
         
         <div style={{ marginBottom: '0.5rem' }}>
@@ -203,11 +306,12 @@ export default function RSVPForm() {
             name="email"
             value={formData.email}
             onChange={handleInputChange}
+            onBlur={handleInputBlur}
             placeholder="Write your e-mail address"
             required
             style={{
               background: 'rgba(255, 255, 255, 0.1)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              border: errors.email ? '1px solid #ff6b6b' : '1px solid rgba(255, 255, 255, 0.2)',
               color: 'white',
               padding: '0.5rem',
               borderRadius: '5px',
@@ -215,6 +319,11 @@ export default function RSVPForm() {
               fontSize: '0.9em'
             }}
           />
+          {errors.email && (
+            <div style={{ color: '#ff6b6b', fontSize: '0.8em', marginTop: '0.25rem' }}>
+              {errors.email}
+            </div>
+          )}
         </div>
         
         <div style={{ marginBottom: '0.5rem' }}>
@@ -227,11 +336,12 @@ export default function RSVPForm() {
             name="phone"
             value={formData.phone}
             onChange={handleInputChange}
+            onBlur={handleInputBlur}
             placeholder="Write your Phone Number"
             required
             style={{
               background: 'rgba(255, 255, 255, 0.1)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              border: errors.phone ? '1px solid #ff6b6b' : '1px solid rgba(255, 255, 255, 0.2)',
               color: 'white',
               padding: '0.5rem',
               borderRadius: '5px',
@@ -239,6 +349,11 @@ export default function RSVPForm() {
               fontSize: '0.9em'
             }}
           />
+          {errors.phone && (
+            <div style={{ color: '#ff6b6b', fontSize: '0.8em', marginTop: '0.25rem' }}>
+              {errors.phone}
+            </div>
+          )}
         </div>
         <button
           type="submit"
