@@ -2,16 +2,16 @@
 
 A dynamic RSVP survey site for graduation ceremonies with email notification capabilities. Built with Next.js, Supabase, and EmailJS.
 
-## ✨ Features
+## Features
 
-- **RSVP Form**: Beautiful, responsive form for graduation RSVPs
+- **RSVP Form**: Responsive form for graduation RSVPs
 - **Email Notifications**: Automatic confirmation emails and bulk notifications
 - **Admin Dashboard**: Manage RSVPs and send updates to all attendees
 - **Data Export**: Export RSVP data to CSV format
 - **Real-time Updates**: Live statistics and data management
 - **Responsive Design**: Works perfectly on all devices
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend**: Next.js 15 with TypeScript
 - **Styling**: Tailwind CSS + Bootstrap-inspired design
@@ -19,7 +19,7 @@ A dynamic RSVP survey site for graduation ceremonies with email notification cap
 - **Email Service**: EmailJS
 - **Deployment**: Vercel-ready
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -66,9 +66,6 @@ CREATE TABLE rsvp_submissions (
   last_name TEXT NOT NULL,
   email TEXT NOT NULL,
   phone TEXT,
-  dietary_restrictions TEXT,
-  plus_one BOOLEAN DEFAULT FALSE,
-  plus_one_name TEXT,
   graduation_date DATE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -100,12 +97,12 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the RSVP form.
 
-## 📱 Pages
+## Pages
 
 - **Home Page** (`/`): Main RSVP form
 - **Admin Dashboard** (`/admin`): Manage RSVPs and send notifications
 
-## 🎨 Customization
+## Customization
 
 ### Styling
 
@@ -136,16 +133,15 @@ const [formData, setFormData] = useState<RSVPData>({
 
 Customize email templates in EmailJS dashboard or modify the email functions in `src/lib/emailjs.ts`.
 
-## 📊 Admin Features
+## Admin Features
 
 The admin dashboard (`/admin`) provides:
 
 - **Statistics**: Total RSVPs, guests, dietary restrictions
-- **Bulk Notifications**: Send emails to all RSVP attendees
 - **Data Export**: Download RSVP data as CSV
 - **RSVP Management**: View all submissions in a table
 
-## 🚀 Deployment
+## Deployment
 
 ### Deploy to Vercel
 
@@ -193,18 +189,18 @@ src/
     └── emailjs.ts     # EmailJS functions
 ```
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Submit a pull request
 
-## 📄 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🆘 Support
+## Support
 
 If you need help setting up or have questions:
 
@@ -213,5 +209,3 @@ If you need help setting up or have questions:
 3. Contact: graduation@university.edu
 
 ---
-
-**Happy Graduation! 🎓✨** 
