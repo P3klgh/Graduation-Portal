@@ -3,6 +3,7 @@ import './globals.css'
 import FontAwesomeLoader from '@/components/FontAwesomeLoader'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { Analytics } from '@vercel/analytics/react'
 
 export const metadata: Metadata = {
   title: 'Graduation Portal - RSVP Survey',
@@ -31,6 +32,7 @@ export default function RootLayout({
           pauseOnHover
           theme="dark"
         />
+        <Analytics />
       </body>
     </html>
   )
